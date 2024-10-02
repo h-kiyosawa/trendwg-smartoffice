@@ -2,7 +2,7 @@ import { useState } from "preact/hooks";
 import Calendar from "./Calendar.tsx";
 import HomeButton from "./HomeButton.tsx";
 
-export default function OfficeMap({ mapData }) {
+export default function OfficeMap({ mapData, chairData }) {
     const [isCalendarVisible, setCalendarVisible] = useState(false);
     const [selectedChairId, setSelectedChairId] = useState(null);
 
@@ -46,7 +46,10 @@ export default function OfficeMap({ mapData }) {
                 <div class="sidebar">
                     <Calendar isVisible={isCalendarVisible} />
                     {selectedChairId && (
-                        <div class="chair-id">Chair ID: {selectedChairId}</div>
+                        <div class="chair-id">
+                            Chair ID: {selectedChairId} -{" "}
+                            {chairData[selectedChairId]}
+                        </div>
                     )}
                 </div>
             </div>
