@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { asset } from "$fresh/runtime.ts";
 
 const Nav = () => {
-    const ref = useRef(window);
+    const ref = useRef(null);
     const [navOpen, setNavOpen] = useState(false);
     const LINK_STYLE = "block mt-4 md:inline-block md:mt-0 hover:text-white";
     const NAV_STYLE =
@@ -12,33 +12,38 @@ const Nav = () => {
         "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:bg-yellow-400 mt-4 md:mt-0";
 
     useEffect(() => {
-        let lastKnownWidth = 0;
-        let ticking = false;
+        if (typeof window !== "undefined") {
+            ref.current = window;
 
-        const doSomething = (width) => {
-            if (width > 768) {
-                setNavOpen(true);
-            } else {
-                setNavOpen(false);
-            }
-        };
+            let lastKnownWidth = 0;
+            let ticking = false;
 
-        const onResize = (e) => {
-            lastKnownWidth = ref.current.innerWidth;
-            if (!ticking) {
-                ref.current.requestAnimationFrame(() => {
-                    doSomething(lastKnownWidth);
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        };
+            const doSomething = (width) => {
+                if (width > 768) {
+                    setNavOpen(true);
+                } else {
+                    setNavOpen(false);
+                }
+            };
 
-        doSomething(ref.current.innerWidth);
-        ref.current.addEventListener("resize", onResize);
-        return () => {
-            ref.current.removeEventListener("resize", onResize);
-        };
+            const onResize = () => {
+                lastKnownWidth = ref.current.innerWidth;
+                if (!ticking) {
+                    ref.current.requestAnimationFrame(() => {
+                        doSomething(lastKnownWidth);
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            };
+
+            doSomething(ref.current.innerWidth);
+            ref.current.addEventListener("resize", onResize);
+
+            return () => {
+                ref.current.removeEventListener("resize", onResize);
+            };
+        }
     }, []);
 
     return (
