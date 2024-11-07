@@ -1,0 +1,35 @@
+<svg width="1000" height="700" viewBox="0 0 1000 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="999" height="699" rx="9.5" fill="#FEF7FF" stroke="black"/>
+<rect x="0.5" y="0.5" width="999" height="699" rx="9.5" fill="#FEF7FF" stroke="black"/>
+<rect x="647" y="375" width="50" height="50" rx="10" transform="rotate(-90 647 375)" fill="#D9D9D9"/>
+<rect x="902.999" y="375.828" width="50" height="50" rx="10" transform="rotate(-90 902.999 375.828)" fill="#D9D9D9"/>
+<rect x="775" y="453" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="775" y="197" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="775" y="453" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="775" y="197" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="500" y="503" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="418" y="503" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="336" y="503" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="500" y="430" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="418" y="430" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="336" y="430" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="254" y="503" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="172" y="503" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="90" y="503" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="254" y="430" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="172" y="430" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="90" y="430" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="500" y="220" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="418" y="220" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="336" y="220" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="500" y="147" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="418" y="147" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="336" y="147" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="254" y="220" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="172" y="220" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="90" y="220" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="254" y="147" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="172" y="147" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<rect x="90" y="147" width="50" height="50" rx="10" fill="#D9D9D9"/>
+<circle cx="800" cy="350" r="80" fill="#00C7BB"/>
+</svg>
