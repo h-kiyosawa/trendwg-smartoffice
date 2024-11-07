@@ -10,8 +10,11 @@ import * as $index from "./routes/index.tsx";
 import * as $Calendar from "./islands/Calendar.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $HomeButton from "./islands/HomeButton.tsx";
+import * as $MapSelector from "./islands/MapSelector.tsx";
+import * as $Nav from "./islands/Nav.tsx";
 import * as $OfficeMap from "./islands/OfficeMap.tsx";
-import { type Manifest } from "$fresh/server.ts";
+import * as $Sidebar from "./islands/Sidebar.tsx";
+import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
@@ -25,7 +28,10 @@ const manifest = {
     "./islands/Calendar.tsx": $Calendar,
     "./islands/Counter.tsx": $Counter,
     "./islands/HomeButton.tsx": $HomeButton,
+    "./islands/MapSelector.tsx": $MapSelector,
+    "./islands/Nav.tsx": $Nav,
     "./islands/OfficeMap.tsx": $OfficeMap,
+    "./islands/Sidebar.tsx": $Sidebar,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

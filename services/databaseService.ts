@@ -9,3 +9,16 @@ export async function getChairData() {
         return acc;
     }, {});
 }
+
+export async function getMapData() {
+    const result = await client.queryArray(
+        "SELECT map_id, map_name, map_data FROM maps",
+    );
+    return result.rows.reduce((acc, [id, name, data]) => {
+        acc[id] = {
+            name: name,
+            data: data,
+        };
+        return acc;
+    }, {});
+}

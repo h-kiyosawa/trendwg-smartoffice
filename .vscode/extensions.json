@@ -1,5 +1,10 @@
 {
   "recommendations": [
+<<<<<<< HEAD
     "denoland.vscode-deno"
+=======
+    "denoland.vscode-deno",
+    "bradlc.vscode-tailwindcss"
+>>>>>>> feature/kiyosawa2
   ]
 }

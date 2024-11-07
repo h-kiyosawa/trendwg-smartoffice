@@ -1,14 +1,14 @@
 import { Head } from "$fresh/runtime.ts";
 import OfficeMap from "../islands/OfficeMap.tsx";
+import Nav from "../islands/Nav.tsx";
 import { Handlers } from "$fresh/server.ts";
-import { getChairData } from "../services/databaseService.ts";
+import { getChairData, getMapData } from "../services/databaseService.ts";
 
 export const handler: Handlers = {
   async GET(_, ctx) {
     try {
       const chairData = await getChairData();
-      const data = await Deno.readTextFile("./static/office-map.json");
-      const mapData = JSON.parse(data);
+      const mapData = await getMapData();
       return ctx.render({ mapData, chairData });
     } catch (error) {
       console.error(error);
@@ -19,13 +19,19 @@ export const handler: Handlers = {
 
 export default function Home({ data }) {
   return (
-    <>
-      <Head>
-        <title>Office Map</title>
-      </Head>
-      <div class="container">
+    <Layout>
+      <div>
         <OfficeMap mapData={data.mapData} chairData={data.chairData} />
       </div>
-    </>
+    </Layout>
   );
 }
+
+export const Layout = ({ children }) => {
+  return (
+    <>
+      <Nav />
+      {children}
+    </>
+  );
+};

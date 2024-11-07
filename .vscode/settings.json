@@ -13,5 +13,12 @@
   },
   "[javascript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
+<<<<<<< HEAD
   }
+=======
+  },
+  "css.customData": [
+    ".vscode/tailwind.json"
+  ]
+>>>>>>> feature/kiyosawa2
 }

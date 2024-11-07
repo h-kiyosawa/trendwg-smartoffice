@@ -1,0 +1,7 @@
+{
+    "imports": {
+        "react": "https://esm.sh/preact/compat",
+        "react-dom": "https://esm.sh/preact/compat",
+        "react-dom/server": "https://esm.sh/preact-render-to-string"
+    }
+}

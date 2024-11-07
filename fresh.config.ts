@@ -1,8 +1,6 @@
 import { defineConfig } from "$fresh/server.ts";
+import tailwind from "$fresh/plugins/tailwind.ts";
 
-export default {
-    // 他の設定
-    static: {
-        path: "./static",
-    },
-};
+export default defineConfig({
+  plugins: [tailwind()],
+});
