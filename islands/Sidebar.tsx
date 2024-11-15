@@ -1,4 +1,7 @@
-import Calendar from "./Calendar.tsx";
+import DatePicker from "./DatePicker.tsx";
+import { Head } from "$fresh/runtime.ts";
+import { useState } from "preact/hooks";
+import TimePicker from "./TimePicker.tsx";
 
 export default function Sidebar(
     { isSidebarVisible, selectedChairId, chairData },
@@ -7,7 +10,7 @@ export default function Sidebar(
         return null;
     }
     return (
-        <div class=" bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
+        <div class=" bg-yellow-100 border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
             <div class="p-4 sm:p-7">
                 <div class="text-center">
                     <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">
@@ -69,7 +72,7 @@ export default function Sidebar(
                                         type="email"
                                         id="email"
                                         name="email"
-                                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                        class="py-3 px-4 block w-full border-blue-500 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                                         required
                                         aria-describedby="email-error"
                                     />
@@ -138,26 +141,72 @@ export default function Sidebar(
                                     8+ characters required
                                 </p>
                             </div>
-
                             <div class="flex items-center">
                                 <div class="flex">
-                                    <input
-                                        id="remember-me"
-                                        name="remember-me"
-                                        type="checkbox"
-                                        class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                                    />
+                                    <svg
+                                        class="w-6 h-6 text-green-400 dark:text-white"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke="currentColor"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                        />
+                                    </svg>
                                 </div>
                                 <div class="ms-3">
-                                    <label
-                                        for="remember-me"
-                                        class="text-sm dark:text-white"
-                                    >
-                                        Remember me
-                                    </label>
+                                    <DatePicker id="startdate" />
+                                </div>
+                                <div class="ms-3">
+                                    <TimePicker />
                                 </div>
                             </div>
-
+                            <div class="flex items-center">
+                                <div class="flex">
+                                    <div class="ms-9">
+                                        <DatePicker id="enddate" />
+                                    </div>
+                                    <div class="ms-3">
+                                        <TimePicker />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="flex">
+                                    <svg
+                                        class="w-6 h-6 text-green-400 dark:text-white"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke="currentColor"
+                                            stroke-linecap="round"
+                                            stroke-width="2"
+                                            d="M5 7h14M5 12h14M5 17h10"
+                                        />
+                                    </svg>
+                                    <div class="flex flex-col space-y-2 ms-3">
+                                        <textarea
+                                            id="message"
+                                            class="border-gray-200 rounded-lg text-sm p-2 resize-y"
+                                            rows="6"
+                                            placeholder="備考を入力してください"
+                                        >
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
                             <button
                                 type="submit"
                                 class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-600 text-white hover:bg-yellow-400 focus:outline-none focus:bg-yellow-500 disabled:opacity-50 disabled:pointer-events-none"

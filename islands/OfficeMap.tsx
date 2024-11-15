@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "preact/hooks";
-import Calendar from "./Calendar.tsx";
 import Sidebar from "./Sidebar.tsx";
 import MapSelector from "./MapSelector.tsx";
 import HomeButton from "./HomeButton.tsx";
