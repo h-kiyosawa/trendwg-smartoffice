@@ -3,12 +3,89 @@ import { Head } from "$fresh/runtime.ts";
 import { useState } from "preact/hooks";
 import TimePicker from "./TimePicker.tsx";
 
+// checkUser メソッドを呼び出すための関数
+async function callCheckUser(email: string, password: string) {
+    const response = await fetch("/api/checkUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    return await response.json();
+}
+
+
 export default function Sidebar(
     { isSidebarVisible, selectedChairId, chairData },
 ) {
     if (!isSidebarVisible) {
         return null;
     }
+
+    // エラーメッセージを管理
+    const [reserveDateError, setReserveDateError] = useState('');
+    const [userError, setUserError] = useState('');
+
+    // 予約日のバリデーションチェック
+    const validateReserveDate = (startdate: string, starttime:string, enddate: string, endtime: string) => {
+        // Date型に変換
+        const dateTimeStart = `${startdate}T${starttime}:00`;
+        const dateTimeEnd = `${enddate}T${endtime}:00`;
+        const dateTimeStartDt = new Date(dateTimeStart);
+        const dateTimeEndDt = new Date(dateTimeEnd);
+
+        // 開始日時が終了日時より前
+        if (dateTimeStartDt > dateTimeEndDt) {
+            return "開始日時は終了日時より過去を指定してください。";
+        } else {
+            return "";
+        }
+    }
+
+    // メールアドレス、パスワードが一致するか検証する
+    const validateUser = async (email: string, password: string) => {
+        const result = await callCheckUser(email, password);
+        if (!result) {
+            return "ユーザー情報が間違っています。";
+        } else {
+            return "";
+        }
+    }
+
+    // フォーム送信時の処理
+    const handleSubmit = async(event:any) => {
+        event.preventDefault();
+    
+        // エラーメッセージの初期化
+        setReserveDateError('');
+        setUserError('');
+
+        let isValid = true;
+
+        // 予約日のチェック
+        const reserveErrorMsg = validateReserveDate(event.target.startdate.value, event.currentTarget[3].value,
+            event.target.enddate.value, event.currentTarget[5].value);
+        if (reserveErrorMsg) {
+            isValid = false;
+        }
+
+        // メールアドレス、パスワードが一致しているかのチェック
+        const userCheckErrorMsg = await validateUser(event.target.email.value, event.target.password.value);
+        if(userCheckErrorMsg) {
+            isValid = false;
+        }
+
+        // バリデーションが成功した場合の処理
+        if (isValid) {
+        // 予約処理を行う
+            
+        } else {
+            setReserveDateError(reserveErrorMsg || "");
+            setUserError(userCheckErrorMsg || "");
+        }
+    };
+
     return (
         <div class=" bg-yellow-100 border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
             <div class="p-4 sm:p-7">
@@ -58,7 +135,7 @@ export default function Sidebar(
                         Or
                     </div>
 
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div class="grid gap-y-4">
                             <div>
                                 <label
@@ -134,6 +211,11 @@ export default function Sidebar(
                                         </svg>
                                     </div>
                                 </div>
+                                {userError && 
+                                    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mt-2" role="alert">
+                                        <strong class="font-bold"><p>{userError}</p></strong>
+                                    </div>
+                                }
                                 <p
                                     class="hidden text-xs text-red-600 mt-2"
                                     id="password-error"
@@ -178,6 +260,11 @@ export default function Sidebar(
                                     </div>
                                 </div>
                             </div>
+                            {reserveDateError && 
+                                    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mt-2" role="alert">
+                                        <strong class="font-bold"><p>{reserveDateError}</p></strong>
+                                    </div>
+                                }
                             <div class="flex items-center">
                                 <div class="flex">
                                     <svg
