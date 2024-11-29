@@ -16,6 +16,7 @@ export default function DatePicker({ id }) {
             new window.Litepicker({
                 element: document.getElementById(id), // 動的にidを参照
                 startDate: new Date(),
+                minDate: new Date(),
                 lang: "ja",
             });
         };
