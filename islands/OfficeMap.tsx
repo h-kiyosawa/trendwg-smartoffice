@@ -74,6 +74,7 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
                 "hover:fill-red-500",
                 "transition-colors",
                 "duration-300",
+                "cursor-pointer",
             );
 
             // クリック時にhandleChairClickを呼び出す

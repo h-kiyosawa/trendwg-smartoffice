@@ -6,15 +6,14 @@ import TimePicker from "./TimePicker.tsx";
 // checkUser メソッドを呼び出すための関数
 async function callCheckUser(email: string, password: string) {
     const response = await fetch("/api/checkUser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
     });
     return await response.json();
 }
-
 
 export default function Sidebar(
     { isSidebarVisible, selectedChairId, chairData },
@@ -24,11 +23,16 @@ export default function Sidebar(
     }
 
     // エラーメッセージを管理
-    const [reserveDateError, setReserveDateError] = useState('');
-    const [userError, setUserError] = useState('');
+    const [reserveDateError, setReserveDateError] = useState("");
+    const [userError, setUserError] = useState("");
 
     // 予約日のバリデーションチェック
-    const validateReserveDate = (startdate: string, starttime:string, enddate: string, endtime: string) => {
+    const validateReserveDate = (
+        startdate: string,
+        starttime: string,
+        enddate: string,
+        endtime: string,
+    ) => {
         // Date型に変換
         const dateTimeStart = `${startdate}T${starttime}:00`;
         const dateTimeEnd = `${enddate}T${endtime}:00`;
@@ -41,7 +45,7 @@ export default function Sidebar(
         } else {
             return "";
         }
-    }
+    };
 
     // メールアドレス、パスワードが一致するか検証する
     const validateUser = async (email: string, password: string) => {
@@ -51,35 +55,41 @@ export default function Sidebar(
         } else {
             return "";
         }
-    }
+    };
 
     // フォーム送信時の処理
-    const handleSubmit = async(event:any) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
-    
+
         // エラーメッセージの初期化
-        setReserveDateError('');
-        setUserError('');
+        setReserveDateError("");
+        setUserError("");
 
         let isValid = true;
 
         // 予約日のチェック
-        const reserveErrorMsg = validateReserveDate(event.target.startdate.value, event.currentTarget[3].value,
-            event.target.enddate.value, event.currentTarget[5].value);
+        const reserveErrorMsg = validateReserveDate(
+            event.target.startdate.value,
+            event.currentTarget[3].value,
+            event.target.enddate.value,
+            event.currentTarget[5].value,
+        );
         if (reserveErrorMsg) {
             isValid = false;
         }
 
         // メールアドレス、パスワードが一致しているかのチェック
-        const userCheckErrorMsg = await validateUser(event.target.email.value, event.target.password.value);
-        if(userCheckErrorMsg) {
+        const userCheckErrorMsg = await validateUser(
+            event.target.email.value,
+            event.target.password.value,
+        );
+        if (userCheckErrorMsg) {
             isValid = false;
         }
 
         // バリデーションが成功した場合の処理
         if (isValid) {
-        // 予約処理を行う
-            
+            // 予約処理を行う
         } else {
             setReserveDateError(reserveErrorMsg || "");
             setUserError(userCheckErrorMsg || "");
@@ -211,11 +221,17 @@ export default function Sidebar(
                                         </svg>
                                     </div>
                                 </div>
-                                {userError && 
-                                    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mt-2" role="alert">
-                                        <strong class="font-bold"><p>{userError}</p></strong>
-                                    </div>
-                                }
+                                {userError &&
+                                    (
+                                        <div
+                                            class="bg-red-100 text-red-700 px-4 py-2 rounded mt-2"
+                                            role="alert"
+                                        >
+                                            <strong class="font-bold">
+                                                <p>{userError}</p>
+                                            </strong>
+                                        </div>
+                                    )}
                                 <p
                                     class="hidden text-xs text-red-600 mt-2"
                                     id="password-error"
@@ -247,7 +263,7 @@ export default function Sidebar(
                                     <DatePicker id="startdate" />
                                 </div>
                                 <div class="ms-3">
-                                    <TimePicker />
+                                    <TimePicker id="starttime" />
                                 </div>
                             </div>
                             <div class="flex items-center">
@@ -260,11 +276,17 @@ export default function Sidebar(
                                     </div>
                                 </div>
                             </div>
-                            {reserveDateError && 
-                                    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mt-2" role="alert">
-                                        <strong class="font-bold"><p>{reserveDateError}</p></strong>
+                            {reserveDateError &&
+                                (
+                                    <div
+                                        class="bg-red-100 text-red-700 px-4 py-2 rounded mt-2"
+                                        role="alert"
+                                    >
+                                        <strong class="font-bold">
+                                            <p>{reserveDateError}</p>
+                                        </strong>
                                     </div>
-                                }
+                                )}
                             <div class="flex items-center">
                                 <div class="flex">
                                     <svg
