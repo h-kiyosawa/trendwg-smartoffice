@@ -193,7 +193,7 @@ html {
   background-color: #cccccc;
   border: 1px solid #000;
 }
-.sidebar {
+.widgettabreserve {
   display: flex;
   flex-direction: column;
   margin-left: 20px;

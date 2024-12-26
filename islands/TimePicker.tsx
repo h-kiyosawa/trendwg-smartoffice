@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
-const TimePicker = () => {
+const TimePicker = ({ id }) => {
     // ドロップダウンの開閉状態
     const [isOpen, setIsOpen] = useState(false);
     // 選択された時刻を保持する状態
@@ -29,12 +29,6 @@ const TimePicker = () => {
     // 初回レンダリング時に時刻リストを生成
     useEffect(() => {
         generateTimeOptions();
-        // 現在時刻をデフォルト値として設定
-        const now = new Date();
-        const defaultTime = `${String(now.getHours()).padStart(2, "0")}:${
-            String(now.getMinutes()).padStart(2, "0")
-        }`;
-        setSelectedTime(defaultTime);
 
         // ドロップダウン外をクリックした時に閉じる
         const handleClickOutside = (event) => {
@@ -79,6 +73,7 @@ const TimePicker = () => {
                 <input
                     ref={inputRef}
                     type="text"
+                    id={id} // idを設定
                     value={selectedTime}
                     onClick={toggleDropdown}
                     onChange={handleInputChange}
@@ -107,7 +102,7 @@ const TimePicker = () => {
             {/* ドロップダウンメニュー */}
             {isOpen && (
                 <div
-                    id="dropdown"
+                    id={`${id}-dropdown`} // ドロップダウンにも動的なidを設定
                     ref={dropdownRef}
                     className="absolute z-10 bg-white divide-y divide-gray-100 font-medium rounded-lg shadow w-44 dark:bg-gray-700"
                     style={{
@@ -121,8 +116,10 @@ const TimePicker = () => {
                             <li key={index}>
                                 <a
                                     href="#"
-                                    onClick={(event) => { event.preventDefault(); 
-                                                           handleSelect(time)}}
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        handleSelect(time);
+                                    }}
                                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                 >
                                     {time}

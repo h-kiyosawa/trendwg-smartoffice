@@ -19,9 +19,9 @@
             "cwd": "${workspaceFolder}",
             "runtimeExecutable": "deno",
             "runtimeArgs": [
-              "run",
-              "--allow-all",
-              "--inspect-brk"
+                "run",
+                "--allow-all",
+                "--inspect"
             ],
             "attachSimplePort": 9229
         }

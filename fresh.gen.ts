@@ -16,8 +16,9 @@ import * as $HomeButton from "./islands/HomeButton.tsx";
 import * as $MapSelector from "./islands/MapSelector.tsx";
 import * as $Nav from "./islands/Nav.tsx";
 import * as $OfficeMap from "./islands/OfficeMap.tsx";
-import * as $Sidebar from "./islands/Sidebar.tsx";
+import * as $SideWidget from "./islands/SideWidget.tsx";
 import * as $TimePicker from "./islands/TimePicker.tsx";
+import * as $WidgetTabReserve from "./islands/WidgetTabReserve.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -38,8 +39,9 @@ const manifest = {
     "./islands/MapSelector.tsx": $MapSelector,
     "./islands/Nav.tsx": $Nav,
     "./islands/OfficeMap.tsx": $OfficeMap,
-    "./islands/Sidebar.tsx": $Sidebar,
+    "./islands/SideWidget.tsx": $SideWidget,
     "./islands/TimePicker.tsx": $TimePicker,
+    "./islands/WidgetTabReserve.tsx": $WidgetTabReserve,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

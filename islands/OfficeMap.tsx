@@ -1,24 +1,14 @@
 import { useEffect, useRef, useState } from "preact/hooks";
-import Sidebar from "./Sidebar.tsx";
 import MapSelector from "./MapSelector.tsx";
-import HomeButton from "./HomeButton.tsx";
-import { readFileSync } from "node:fs"; // Denoでファイルを読み込む方法を使う
-import path from "node:path";
+import SideWidget from "./SideWidget.tsx";
 
 export default function OfficeMap({ mapData, chairData }) {
-    const [isSidebarVisible, setSidebarVisible] = useState(false);
     const [selectedChairId, setSelectedChairId] = useState(null);
     const [selectedMap, setSelectedMap] = useState(null);
 
     // handleChairClickを親コンポーネントで定義
     const handleChairClick = (id) => {
         setSelectedChairId(id);
-        setSidebarVisible(true);
-    };
-
-    const handleHomeClick = () => {
-        setSelectedChairId(null);
-        setSidebarVisible(false);
     };
 
     const handleMapSelect = (selectedMapData) => {
@@ -32,9 +22,8 @@ export default function OfficeMap({ mapData, chairData }) {
     //メインページ要素の位置はここで調整
     return (
         <div class="office-container flex flex-row justify-center items-start min-h-screen mt-10">
-            <div class="sidebar mr-4 mt-16">
-                <Sidebar
-                    isSidebarVisible={isSidebarVisible}
+            <div class="widgettabreserve mr-4 mt-16">
+                <SideWidget
                     selectedChairId={selectedChairId}
                     chairData={chairData}
                 />
@@ -87,12 +76,27 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
 
     const handleWheel = (event) => {
         event.preventDefault();
+
         const zoomFactor = 0.1;
         const delta = event.deltaY;
 
+        // マウスポインタの座標を取得
+        const rect = event.currentTarget.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left; // マウスのX座標 (相対)
+        const mouseY = event.clientY - rect.top; // マウスのY座標 (相対)
+
+        // 新しいスケールを計算
         let newScale = scale + (delta > 0 ? -zoomFactor : zoomFactor);
         newScale = Math.max(0.5, Math.min(newScale, 3)); // 最小・最大ズーム制限
+
+        // ズームに合わせてオフセットを調整
+        const scaleRatio = newScale / scale;
+        const newOffsetX = mouseX - (mouseX - offset.x) * scaleRatio;
+        const newOffsetY = mouseY - (mouseY - offset.y) * scaleRatio;
+
+        // 新しいスケールとオフセットを設定
         setScale(newScale);
+        setOffset({ x: newOffsetX, y: newOffsetY });
     };
 
     const handleMouseDown = (event) => {
@@ -124,7 +128,7 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
                     cursor: "grab",
                     transform:
                         `translate(${offset.x}px, ${offset.y}px) scale(${scale})`,
-                    transformOrigin: "0 0", // ズームの中心を左上に設定
+                    transformOrigin: "0 0", // 左上を基準にズーム
                     transition: "transform 0.1s ease-out",
                 }}
                 class="absolute"
