@@ -45,6 +45,7 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
     const svgRef = useRef(null);
     const [scale, setScale] = useState(1);
     const [offset, setOffset] = useState({ x: 0, y: 0 });
+    const [highlightedChairId, setHighlightedChairId] = useState(null); // ハイライト対象の状態を管理
 
     useEffect(() => {
         const svgElement = svgRef.current;
@@ -53,26 +54,81 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
 
         // SVGを設定する
         svgElement.innerHTML = selectedMap.data; // selectedMap.dataがSVGのコンテンツ
+    }, [selectedMap]); // selectedMapが変わったときに再実行
+
+    const handleChairElementClick = (element) => {
+        const chairId = Number(element.id); // SVG要素のidを取得
+        handleChairClick(chairId); // 親コンポーネントのhandleChairClickを呼び出す
+        setHighlightedChairId(chairId); // ハイライト対象を更新
+    };
+
+    useEffect(() => {
+        const svgElement = svgRef.current;
+
+        if (!svgElement) return;
 
         // 特定の条件に合うSVG要素を取得
         const targetElements = svgElement.querySelectorAll('[type="chair"]');
 
-        // Tailwindのホバークラスを追加
-        targetElements.forEach((element) => {
-            element.classList.add(
+        // ホバークラスを適用
+        targetElements.forEach((el) => {
+            el.classList.add(
                 "hover:fill-red-500",
                 "transition-colors",
                 "duration-300",
                 "cursor-pointer",
             );
-
-            // クリック時にhandleChairClickを呼び出す
-            element.addEventListener("click", () => {
-                const chairId = Number(element.id); // SVG要素のidを取得
-                handleChairClick(chairId); // 親コンポーネントのhandleChairClickを呼び出す
-            });
         });
-    }, [handleChairClick, selectedMap]); // selectedMapが変わったときに再実行
+        // クリック時の処理を追加
+        targetElements.forEach((element) => {
+            element.addEventListener(
+                "click",
+                () => handleChairElementClick(element),
+            );
+        });
+
+        // クリーンアップ処理
+        return () => {
+            targetElements.forEach((element) => {
+                element.removeEventListener(
+                    "click",
+                    () => handleChairElementClick(element),
+                );
+            });
+        };
+    }, [handleChairClick, highlightedChairId]); // highlightedChairId が変わるたびに実行
+
+    useEffect(() => {
+        const svgElement = svgRef.current;
+
+        if (!svgElement) return;
+
+        // 特定の条件に合うSVG要素を取得
+        const targetElements = svgElement.querySelectorAll('[type="chair"]');
+
+        // 他の要素のハイライトをリセット
+        targetElements.forEach((el) => {
+            el.classList.remove(
+                "fill-green-500",
+                "stroke-blue-500",
+                "stroke-2",
+            );
+        });
+
+        // ハイライト対象の要素にスタイルを適用
+        if (highlightedChairId !== null) {
+            const targetElement = svgElement.querySelector(
+                `[id="${highlightedChairId}"]`,
+            );
+            if (targetElement) {
+                targetElement.classList.add(
+                    "fill-green-500",
+                    "stroke-blue-500",
+                    "stroke-2",
+                );
+            }
+        }
+    }, [highlightedChairId]); // ハイライトが変わったときに実行
 
     const handleWheel = (event) => {
         event.preventDefault();
