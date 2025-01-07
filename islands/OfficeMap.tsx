@@ -4,11 +4,27 @@ import SideWidget from "./SideWidget.tsx";
 
 export default function OfficeMap({ mapData, chairData }) {
     const [selectedChairId, setSelectedChairId] = useState(null);
+    const [reservations, setReservations] = useState([]);
     const [selectedMap, setSelectedMap] = useState(null);
+
+    // 予約データを取得する関数
+    const fetchReservations = async (seatId) => {
+        try {
+            const response = await fetch(`/api/reservations?seat_id=${seatId}`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch reservations");
+            }
+            const data = await response.json();
+            setReservations(data.reservations); // 取得した予約データを保存
+        } catch (error) {
+            console.error("Error fetching reservations:", error);
+        }
+    };
 
     // handleChairClickを親コンポーネントで定義
     const handleChairClick = (id) => {
         setSelectedChairId(id);
+        fetchReservations(id);
     };
 
     const handleMapSelect = (selectedMapData) => {
@@ -26,6 +42,7 @@ export default function OfficeMap({ mapData, chairData }) {
                 <SideWidget
                     selectedChairId={selectedChairId}
                     chairData={chairData}
+                    reservations={reservations}
                 />
             </div>
             <div>

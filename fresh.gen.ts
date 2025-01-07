@@ -7,6 +7,7 @@ import * as $_app from "./routes/_app.tsx";
 import * as $api_checkUser from "./routes/api/checkUser.ts";
 import * as $api_checkUserApi from "./routes/api/checkUserApi.ts";
 import * as $api_createReservation from "./routes/api/createReservation.ts";
+import * as $api_getReservation from "./routes/api/getReservation.ts";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
@@ -28,6 +29,7 @@ const manifest = {
     "./routes/api/checkUser.ts": $api_checkUser,
     "./routes/api/checkUserApi.ts": $api_checkUserApi,
     "./routes/api/createReservation.ts": $api_createReservation,
+    "./routes/api/getReservation.ts": $api_getReservation,
     "./routes/api/joke.ts": $api_joke,
     "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,

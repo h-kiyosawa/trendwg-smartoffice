@@ -1,7 +1,9 @@
 import { useState } from "preact/hooks";
 import WidgetTabReserve from "./WidgetTabReserve.tsx";
 
-export default function SideWidget({ selectedChairId, chairData }) {
+export default function SideWidget(
+    { selectedChairId, chairData, reservations },
+) {
     const [selectedTab, setSelectedTab] = useState(
         "card-type-tab-preview",
     );
@@ -79,6 +81,7 @@ export default function SideWidget({ selectedChairId, chairData }) {
                     <WidgetTabReserve
                         selectedChairId={selectedChairId}
                         chairData={chairData}
+                        reservations={reservations}
                     />
                 </div>
                 <div
