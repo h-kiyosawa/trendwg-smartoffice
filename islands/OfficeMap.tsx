@@ -30,7 +30,7 @@ export default function OfficeMap({ mapData, chairData }) {
             </div>
             <div>
                 <MapSelector mapData={mapData} onSelect={handleMapSelect} />
-                <div class="mapbody mt-5">
+                <div id = "mapContainer"  class="mapbody mt-5">
                     <SvgComponent
                         handleChairClick={handleChairClick}
                         selectedMap={selectedMap}
@@ -137,7 +137,7 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
         const delta = event.deltaY;
 
         // マウスポインタの座標を取得
-        const rect = event.currentTarget.getBoundingClientRect();
+        const rect = document.getElementById("mapContainer").getBoundingClientRect();
         const mouseX = event.clientX - rect.left; // マウスのX座標 (相対)
         const mouseY = event.clientY - rect.top; // マウスのY座標 (相対)
 
