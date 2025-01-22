@@ -3,34 +3,44 @@ import OfficeMap from "../islands/OfficeMap.tsx";
 import Nav from "../islands/Nav.tsx";
 import { Handlers } from "$fresh/server.ts";
 import { getChairData, getMapData } from "../services/databaseService.ts";
+import { getCookies } from "$std/http/cookie.ts";
+import { getJwtPayload, inspectAlgorithm } from "../util/jwt.ts";
 
 export const handler: Handlers = {
-  async GET(_, ctx) {
+  async GET(req, ctx) {
     try {
+      // ログイン判定
+      const cookies = getCookies(req.headers);
+      const jwtToken = cookies.token || "";
+
+      let payload = null;
+      if ((await inspectAlgorithm(jwtToken))) {
+        payload = await getJwtPayload(jwtToken);   
+      }
       const chairData = await getChairData();
       const mapData = await getMapData();
-      return ctx.render({ mapData, chairData });
+      return ctx.render({ mapData, chairData, payload });
     } catch (error) {
       console.error(error);
-      return ctx.render({ mapData: {}, chairData: {} });
+      return ctx.render({ mapData: {}, chairData: {}, payload: null});
     }
   },
 };
 
 export default function Home({ data }) {
   return (
-    <Layout>
+    <Layout payload={data.payload}>
       <div>
-        <OfficeMap mapData={data.mapData} chairData={data.chairData} />
+        <OfficeMap mapData={data.mapData} chairData={data.chairData} payload={data.payload} />
       </div>
     </Layout>
   );
 }
 
-export const Layout = ({ children }) => {
+export const Layout = ({ children, payload }) => {
   return (
     <>
-      <Nav />
+      <Nav payload={payload}/>
       {children}
     </>
   );

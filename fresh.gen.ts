@@ -4,12 +4,17 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $api_checkEmail from "./routes/api/checkEmail.ts";
 import * as $api_checkUser from "./routes/api/checkUser.ts";
-import * as $api_checkUserApi from "./routes/api/checkUserApi.ts";
+import * as $api_createAccount from "./routes/api/createAccount.ts";
 import * as $api_createReservation from "./routes/api/createReservation.ts";
 import * as $api_joke from "./routes/api/joke.ts";
+import * as $api_loginApi from "./routes/api/loginApi.ts";
+import * as $api_userApi from "./routes/api/userApi.ts";
+import * as $auth_register from "./routes/auth/register.tsx";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
+import * as $logout from "./routes/logout.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $DatePicker from "./islands/DatePicker.tsx";
 import * as $HomeButton from "./islands/HomeButton.tsx";
@@ -18,19 +23,26 @@ import * as $Nav from "./islands/Nav.tsx";
 import * as $OfficeMap from "./islands/OfficeMap.tsx";
 import * as $SideWidget from "./islands/SideWidget.tsx";
 import * as $TimePicker from "./islands/TimePicker.tsx";
+import * as $WidgetTabLogin from "./islands/WidgetTabLogin.tsx";
 import * as $WidgetTabReserve from "./islands/WidgetTabReserve.tsx";
+import * as $createAccountForm from "./islands/createAccountForm.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/api/checkEmail.ts": $api_checkEmail,
     "./routes/api/checkUser.ts": $api_checkUser,
-    "./routes/api/checkUserApi.ts": $api_checkUserApi,
+    "./routes/api/createAccount.ts": $api_createAccount,
     "./routes/api/createReservation.ts": $api_createReservation,
     "./routes/api/joke.ts": $api_joke,
+    "./routes/api/loginApi.ts": $api_loginApi,
+    "./routes/api/userApi.ts": $api_userApi,
+    "./routes/auth/register.tsx": $auth_register,
     "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,
+    "./routes/logout.tsx": $logout,
   },
   islands: {
     "./islands/Counter.tsx": $Counter,
@@ -41,7 +53,9 @@ const manifest = {
     "./islands/OfficeMap.tsx": $OfficeMap,
     "./islands/SideWidget.tsx": $SideWidget,
     "./islands/TimePicker.tsx": $TimePicker,
+    "./islands/WidgetTabLogin.tsx": $WidgetTabLogin,
     "./islands/WidgetTabReserve.tsx": $WidgetTabReserve,
+    "./islands/createAccountForm.tsx": $createAccountForm,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

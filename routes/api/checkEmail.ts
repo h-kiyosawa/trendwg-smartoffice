@@ -1,10 +1,10 @@
-import { checkUser } from "./userApi.ts";
+import { checkEmail } from "./userApi.ts";
 
-// メールアドレスとパスワードの一致を検証するAPIをリクエスト
+// メールアドレスを検証するAPIをリクエスト
 export const handler = async (req: Request): Promise<Response> => {
   if (req.method === "POST") {
-    const { email, password } = await req.json();
-    const result = await checkUser(email, password);
+    const { email } = await req.json();
+    const result = await checkEmail(email);
     return new Response(JSON.stringify(result), {
       headers: { "Content-Type": "application/json" },
     });

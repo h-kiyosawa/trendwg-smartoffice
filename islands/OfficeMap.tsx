@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import MapSelector from "./MapSelector.tsx";
 import SideWidget from "./SideWidget.tsx";
 
-export default function OfficeMap({ mapData, chairData }) {
+export default function OfficeMap({ mapData, chairData, payload }) {
     const [selectedChairId, setSelectedChairId] = useState(null);
     const [selectedMap, setSelectedMap] = useState(null);
 
@@ -26,6 +26,7 @@ export default function OfficeMap({ mapData, chairData }) {
                 <SideWidget
                     selectedChairId={selectedChairId}
                     chairData={chairData}
+                    payload={payload}
                 />
             </div>
             <div>

@@ -1,7 +1,9 @@
 import { useState } from "preact/hooks";
 import WidgetTabReserve from "./WidgetTabReserve.tsx";
+import WidgetTabLogin from "./WidgetTabLogin.tsx";
+import { JSX } from "preact";
 
-export default function SideWidget({ selectedChairId, chairData }) {
+export default function SideWidget({selectedChairId, chairData, payload}): JSX.Element {
     const [selectedTab, setSelectedTab] = useState(
         "card-type-tab-preview",
     );
@@ -34,6 +36,7 @@ export default function SideWidget({ selectedChairId, chairData }) {
                     >
                         予約
                     </button>
+                    {!payload && ( 
                     <button
                         type="button"
                         className={`-mb-px py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium text-center border rounded-t-lg focus:outline-none 
@@ -47,8 +50,9 @@ export default function SideWidget({ selectedChairId, chairData }) {
                         onClick={() => handleTabClick("card-type-tab-2")}
                         role="tab"
                     >
-                        Tab 2
-                    </button>
+                        ログイン
+                    </button>)
+                    }
                     <button
                         type="button"
                         className={`-mb-px py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium text-center border rounded-t-lg focus:outline-none 
@@ -90,6 +94,7 @@ export default function SideWidget({ selectedChairId, chairData }) {
                     aria-labelledby="card-type-tab-item-2"
                 >
                     {/* タブ2 */}
+                    <WidgetTabLogin payload={payload}/>
                 </div>
                 <div
                     id="card-type-tab-3"

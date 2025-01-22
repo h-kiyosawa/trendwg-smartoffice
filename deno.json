@@ -30,6 +30,8 @@
     "tailwindcss/": "npm:/tailwindcss@3.4.1/",
     "tailwindcss/plugin": "npm:/tailwindcss@3.4.1/plugin.js",
     "$std/": "https://deno.land/std@0.216.0/",
+    "djwt/": "https://deno.land/x/djwt@v2.7/",
+    "deno_csrf/": "https://deno.land/x/deno_csrf@0.0.4/",
     "pg": "https://deno.land/x/postgres@v0.17.0/mod.ts"
   },
   "compilerOptions": {
