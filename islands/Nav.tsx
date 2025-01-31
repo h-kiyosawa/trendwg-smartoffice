@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import { asset } from "$fresh/runtime.ts";
 
-const Nav = () => {
+const Nav = ({ payload }) => {
     const ref = useRef(null);
     const [navOpen, setNavOpen] = useState(false);
     const LINK_STYLE = "block mt-4 md:inline-block md:mt-0 hover:text-white";
@@ -80,25 +80,18 @@ const Nav = () => {
                         </svg>
                     </button>
                 </div>
-                {navOpen && (
+                {navOpen && payload && (
                     <div className={NAV_STYLE}>
-                        <div className={NAV_LINKS_STYLE}>
-                            <a href="/login" className={`${BUTTON_STYLE} mr-4`}>
-                                Login
-                            </a>
+                        <div>
+                            <label className="text-white">
+                                ログインユーザー：{payload.name}
+                            </label>
+
                             <a
                                 href="/logout"
-                                className={`${BUTTON_STYLE} mr-4`}
+                                className={`${BUTTON_STYLE} ml-10`}
                             >
                                 Logout
-                            </a>
-                            <a href="/account" className={BUTTON_STYLE}>
-                                Account
-                            </a>
-                        </div>
-                        <div>
-                            <a href="/signup" className={BUTTON_STYLE}>
-                                Signup
                             </a>
                         </div>
                     </div>
