@@ -15,7 +15,7 @@ async function callCheckUser(email: string, password: string) {
 }
 
 export default function WidgetTabReserve(
-    { selectedChairId, chairData },
+    { selectedChairId, chairData, reservations },
 ) {
     // エラーメッセージを管理
     const [reserveDateError, setReserveDateError] = useState("");
@@ -125,6 +125,52 @@ export default function WidgetTabReserve(
             <div class="mt-5">
                 <form onSubmit={handleSubmit}>
                     <div class="grid gap-y-4">
+                        <div class="flex flex-col">
+                            <div class="-m-1.5 overflow-x-auto">
+                                <div class="p-1.5 min-w-full inline-block align-middle">
+                                    <div class="border rounded-lg shadow overflow-hidden dark:border-neutral-700 dark:shadow-gray-900">
+                                        <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                            <thead>
+                                                <tr>
+                                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                                        開始日時
+                                                    </th>
+                                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                                        終了日時
+                                                    </th>
+                                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                                        状態
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+                                                {reservations.map((
+                                                    reservation,
+                                                ) => (
+                                                    <tr key={reservation.id}>
+                                                        <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">
+                                                            {new Date(
+                                                                reservation
+                                                                    .start_date,
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">
+                                                            {new Date(
+                                                                reservation
+                                                                    .end_date,
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">
+                                                            {reservation.status}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="flex items-center">
                             <div class="flex">
                                 <svg

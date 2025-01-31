@@ -4,11 +4,42 @@ import SideWidget from "./SideWidget.tsx";
 
 export default function OfficeMap({ mapData, chairData, payload }) {
     const [selectedChairId, setSelectedChairId] = useState(null);
+    const [reservations, setReservations] = useState([]);
     const [selectedMap, setSelectedMap] = useState(null);
+    const [allReservations, setAllReservations] = useState(new Map());
 
-    // handleChairClickを親コンポーネントで定義
+    // **初回に全予約データを取得**
+    useEffect(() => {
+        const fetchAllReservations = async () => {
+            try {
+                const response = await fetch(`/api/getReservation`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch reservations");
+                }
+
+                const data = await response.json();
+                const reservationsMap = new Map();
+
+                data.reservations.forEach((res) => {
+                    if (!reservationsMap.has(res.seat_id)) {
+                        reservationsMap.set(res.seat_id, []);
+                    }
+                    reservationsMap.get(res.seat_id).push(res);
+                });
+
+                setAllReservations(reservationsMap);
+            } catch (error) {
+                console.error("Error fetching all reservations:", error);
+            }
+        };
+
+        fetchAllReservations();
+    }, []);
+
+    // クリック時にキャッシュから取得
     const handleChairClick = (id) => {
         setSelectedChairId(id);
+        setReservations(allReservations.get(id) || []);
     };
 
     const handleMapSelect = (selectedMapData) => {
@@ -27,11 +58,12 @@ export default function OfficeMap({ mapData, chairData, payload }) {
                     selectedChairId={selectedChairId}
                     chairData={chairData}
                     payload={payload}
+                    reservations={reservations}
                 />
             </div>
             <div>
                 <MapSelector mapData={mapData} onSelect={handleMapSelect} />
-                <div id = "mapContainer"  class="mapbody mt-5">
+                <div id="mapContainer" class="mapbody mt-5">
                     <SvgComponent
                         handleChairClick={handleChairClick}
                         selectedMap={selectedMap}
@@ -138,7 +170,8 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
         const delta = event.deltaY;
 
         // マウスポインタの座標を取得
-        const rect = document.getElementById("mapContainer").getBoundingClientRect();
+        const rect = document.getElementById("mapContainer")
+            .getBoundingClientRect();
         const mouseX = event.clientX - rect.left; // マウスのX座標 (相対)
         const mouseY = event.clientY - rect.top; // マウスのY座標 (相対)
 

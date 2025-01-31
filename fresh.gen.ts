@@ -8,6 +8,7 @@ import * as $api_checkEmail from "./routes/api/checkEmail.ts";
 import * as $api_checkUser from "./routes/api/checkUser.ts";
 import * as $api_createAccount from "./routes/api/createAccount.ts";
 import * as $api_createReservation from "./routes/api/createReservation.ts";
+import * as $api_getReservation from "./routes/api/getReservation.ts";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $api_loginApi from "./routes/api/loginApi.ts";
 import * as $api_userApi from "./routes/api/userApi.ts";
@@ -36,6 +37,7 @@ const manifest = {
     "./routes/api/checkUser.ts": $api_checkUser,
     "./routes/api/createAccount.ts": $api_createAccount,
     "./routes/api/createReservation.ts": $api_createReservation,
+    "./routes/api/getReservation.ts": $api_getReservation,
     "./routes/api/joke.ts": $api_joke,
     "./routes/api/loginApi.ts": $api_loginApi,
     "./routes/api/userApi.ts": $api_userApi,
