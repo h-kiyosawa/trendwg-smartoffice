@@ -1,6 +1,7 @@
 import DatePicker from "./DatePicker.tsx";
 import { useState } from "preact/hooks";
 import TimePicker from "./TimePicker.tsx";
+import { CHAIR_ICON_SVG } from "../static/svgData.ts";
 
 // checkUser メソッドを呼び出すための関数
 async function callCheckUser(email: string, password: string) {
@@ -117,13 +118,23 @@ export default function WidgetTabReserve(
 
     return (
         <div class="p-4 sm:p-7">
-            <div class="text-center">
-                <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">
-                    予約
-                </h1>
-                <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-                    Chair ID: {selectedChairId} - {chairData[selectedChairId]}
-                </p>
+            <div class="flex items-center space-x-3">
+                <div
+                    dangerouslySetInnerHTML={{
+                        __html: CHAIR_ICON_SVG,
+                    }}
+                />{" "}
+                {selectedChairId !== null && chairData[selectedChairId]
+                    ? (
+                        <p class="mt-2 text-xl font-bold text-white bg-blue-600 px-4 py-2 rounded-lg shadow-lg">
+                            {chairData[selectedChairId]}
+                        </p>
+                    )
+                    : (
+                        <p class="mt-2 text-xl font-bold text-white bg-red-500 px-4 py-2 rounded-lg shadow-lg animate-pulse">
+                            椅子を選択してください
+                        </p>
+                    )}
             </div>
 
             <div class="mt-5">
