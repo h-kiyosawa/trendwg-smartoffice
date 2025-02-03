@@ -97,11 +97,20 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
 
     useEffect(() => {
         const svgElement = svgRef.current;
-
         if (!svgElement) return;
 
-        // 特定の条件に合うSVG要素を取得
         const targetElements = svgElement.querySelectorAll('[type="chair"]');
+
+        // クリックイベントハンドラー
+        const handleClick = (event) => {
+            const element = event.currentTarget;
+            handleChairElementClick(element);
+        };
+
+        // 既存のイベントリスナーを削除
+        targetElements.forEach((element) => {
+            element.removeEventListener("click", handleClick);
+        });
 
         // ホバークラスを適用
         targetElements.forEach((el) => {
@@ -112,24 +121,19 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
                 "cursor-pointer",
             );
         });
-        // クリック時の処理を追加
+
+        // クリックイベントリスナーを追加
         targetElements.forEach((element) => {
-            element.addEventListener(
-                "click",
-                () => handleChairElementClick(element),
-            );
+            element.addEventListener("click", handleClick);
         });
 
-        // クリーンアップ処理
         return () => {
+            // クリーンアップ時にリスナーを削除
             targetElements.forEach((element) => {
-                element.removeEventListener(
-                    "click",
-                    () => handleChairElementClick(element),
-                );
+                element.removeEventListener("click", handleClick);
             });
         };
-    }, [handleChairClick, highlightedChairId]); // highlightedChairId が変わるたびに実行
+    }, [selectedMap]); // selectedMap が変更されたときのみ実行
 
     useEffect(() => {
         const svgElement = svgRef.current;
