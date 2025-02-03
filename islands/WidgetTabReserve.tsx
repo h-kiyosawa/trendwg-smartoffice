@@ -21,6 +21,10 @@ export default function WidgetTabReserve(
     const [reserveDateError, setReserveDateError] = useState("");
     const [userError, setUserError] = useState("");
 
+    const chairReservations = reservations.filter(
+        (reservation) => reservation.seat_id === selectedChairId,
+    );
+
     // 予約日のバリデーションチェック
     const validateReserveDate = (
         startdate: string,

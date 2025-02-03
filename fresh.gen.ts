@@ -22,6 +22,9 @@ import * as $HomeButton from "./islands/HomeButton.tsx";
 import * as $MapSelector from "./islands/MapSelector.tsx";
 import * as $Nav from "./islands/Nav.tsx";
 import * as $OfficeMap from "./islands/OfficeMap.tsx";
+import * as $OfficeMap_tsx_BASE from "./islands/OfficeMap.tsx.BASE.tsx";
+import * as $OfficeMap_tsx_LOCAL from "./islands/OfficeMap.tsx.LOCAL.tsx";
+import * as $OfficeMap_tsx_REMOTE from "./islands/OfficeMap.tsx.REMOTE.tsx";
 import * as $SideWidget from "./islands/SideWidget.tsx";
 import * as $TimePicker from "./islands/TimePicker.tsx";
 import * as $WidgetTabLogin from "./islands/WidgetTabLogin.tsx";
@@ -53,6 +56,9 @@ const manifest = {
     "./islands/MapSelector.tsx": $MapSelector,
     "./islands/Nav.tsx": $Nav,
     "./islands/OfficeMap.tsx": $OfficeMap,
+    "./islands/OfficeMap.tsx.BASE.tsx": $OfficeMap_tsx_BASE,
+    "./islands/OfficeMap.tsx.LOCAL.tsx": $OfficeMap_tsx_LOCAL,
+    "./islands/OfficeMap.tsx.REMOTE.tsx": $OfficeMap_tsx_REMOTE,
     "./islands/SideWidget.tsx": $SideWidget,
     "./islands/TimePicker.tsx": $TimePicker,
     "./islands/WidgetTabLogin.tsx": $WidgetTabLogin,
