@@ -15,7 +15,7 @@ export default function SideWidget(
     };
 
     return (
-        <div>
+        <div className="h-full flex flex-col">
             <div>
                 <nav
                     className="flex gap-x-1"
@@ -72,7 +72,7 @@ export default function SideWidget(
                     </button>
                 </nav>
             </div>
-            <div className="w-96 h-auto bg-yellow-100 border border-gray-200 rounded-xl rounded-tl-none shadow-sm">
+            <div className="w-96 h-full bg-yellow-100 border border-gray-200 rounded-xl rounded-tl-none shadow-sm flex-grow">
                 <div
                     id="card-type-tab-preview"
                     role="tabpanel"
@@ -81,7 +81,6 @@ export default function SideWidget(
                         : "hidden"}
                     aria-labelledby="card-type-tab-item-1"
                 >
-                    {/* タブ1 */}
                     <WidgetTabReserve
                         selectedChairId={selectedChairId}
                         chairData={chairData}
@@ -96,7 +95,6 @@ export default function SideWidget(
                         : "hidden"}
                     aria-labelledby="card-type-tab-item-2"
                 >
-                    {/* タブ2 */}
                     <WidgetTabLogin payload={payload} />
                 </div>
                 <div
