@@ -1,10 +1,12 @@
-import { useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 
 const MapSelector = ({ mapData, onSelect }) => {
     // ドロップダウンの開閉状態
     const [isOpen, setIsOpen] = useState(false);
     // 選択されたマップを保持する状態
     const [selectedMap, setSelectedMap] = useState("マップを選択");
+    // ドロップダウンのDOM参照を行うhook
+    const dropdownRef = useRef(null);
 
     // ドロップダウンの開閉をトグルする関数
     const toggleDropdown = () => {
@@ -17,6 +19,27 @@ const MapSelector = ({ mapData, onSelect }) => {
         onSelect(mapData[id]); // 選択された mapData を返す
         setIsOpen(false); // ドロップダウンを閉じる
     };
+
+    // 初回レンダリング時にドロップダウンの動作を設定する
+    useEffect(() => {
+        // ドロップダウン外をクリックした時に閉じる
+        const handleClickOutside = (event) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        // イベントリスナーを追加
+        document.addEventListener("mousedown", handleClickOutside);
+
+        // コンポーネントアンマウント時にイベントリスナーを削除
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <div>
@@ -49,6 +72,7 @@ const MapSelector = ({ mapData, onSelect }) => {
             {isOpen && (
                 <div
                     id="dropdown"
+                    ref={dropdownRef}
                     className="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
                 >
                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
