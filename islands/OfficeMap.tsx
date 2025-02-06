@@ -9,19 +9,65 @@ export default function OfficeMap({ mapData, chairData, payload }) {
     const [selectedMap, setSelectedMap] = useState(null);
     const [allReservations, setAllReservations] = useState(new Map());
 
-    // **初回に全予約データを取得**
+    // **初回にステータスを更新し、チェックイン前の全予約データを取得**
     useEffect(() => {
-        const fetchAllReservations = async () => {
+        const fetchAndUpdateReservations = async () => {
             try {
-                const response = await fetch(`/api/getReservation`);
+                // status=1で予約を取得
+                const response = await fetch(`/api/getReservation?status=1`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch reservations");
                 }
 
                 const data = await response.json();
+                const reservationsToUpdate = [];
+
+                // 現在時刻を取得
+                const now = new Date();
+
+                // 取得した予約の終了時刻が過去のものをチェックし、ステータスを更新
+                data.reservations.forEach((reservation) => {
+                    const endDate = new Date(reservation.end_date);
+                    if (endDate < now) {
+                        reservationsToUpdate.push(reservation.reservation_id); // 更新対象の予約IDを収集
+                    }
+                });
+
+                // ステータスを更新するAPIリクエスト
+                if (reservationsToUpdate.length > 0) {
+                    const updateResponse = await fetch(
+                        "/api/updateReservation",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                reservationIds: reservationsToUpdate,
+                                newStatus: 5,
+                            }),
+                        },
+                    );
+
+                    if (!updateResponse.ok) {
+                        throw new Error(
+                            "Failed to update reservation statuses",
+                        );
+                    }
+                }
+
+                // 更新後、再度予約データを取得
+                const updatedResponse = await fetch(
+                    `/api/getReservation?status=1`,
+                );
+                if (!updatedResponse.ok) {
+                    throw new Error("Failed to fetch updated reservations");
+                }
+
+                const updatedData = await updatedResponse.json();
                 const reservationsMap = new Map();
 
-                data.reservations.forEach((res) => {
+                updatedData.reservations.forEach((res) => {
                     if (!reservationsMap.has(res.seat_id)) {
                         reservationsMap.set(res.seat_id, []);
                     }
@@ -30,12 +76,15 @@ export default function OfficeMap({ mapData, chairData, payload }) {
 
                 setAllReservations(reservationsMap);
             } catch (error) {
-                console.error("Error fetching all reservations:", error);
+                console.error(
+                    "Error fetching and updating reservations:",
+                    error,
+                );
             }
         };
 
-        fetchAllReservations();
-    }, []);
+        fetchAndUpdateReservations();
+    }, []); // 初回レンダリング時に実行
 
     // クリック時にキャッシュから取得
     const handleChairClick = (id) => {
