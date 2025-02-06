@@ -9,6 +9,7 @@ export const handler = async (req: Request, _ctx: HandlerContext) => {
         const seatId = url.searchParams.get("seat_id") || undefined;
         const startDate = url.searchParams.get("start_date") || undefined;
         const endDate = url.searchParams.get("end_date") || undefined;
+        const status = url.searchParams.get("status") || undefined;
 
         // SQLクエリの構築
         let query =
@@ -31,6 +32,10 @@ export const handler = async (req: Request, _ctx: HandlerContext) => {
         if (endDate) {
             query += ` AND end_date <= $${params.length + 1}`;
             params.push(endDate);
+        }
+        if (status) {
+            query += ` AND status = $${params.length + 1}`;
+            params.push(status);
         }
 
         // データベースから予約を取得
