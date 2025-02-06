@@ -287,6 +287,7 @@ export default function WidgetTabReserve(
                                         class="border-gray-200 rounded-lg text-sm p-2 resize-y"
                                         rows="6"
                                         placeholder="備考を入力してください"
+                                        style="width: 292px; resize: none;"
                                     >
                                     </textarea>
                                 </div>
