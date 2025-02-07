@@ -72,7 +72,10 @@ export default function SideWidget(
                     </button>
                 </nav>
             </div>
-            <div className="w-96 h-full bg-yellow-100 border border-gray-200 rounded-xl rounded-tl-none shadow-sm " style={{ width: '382.4px', height: '716px' }}>
+            <div
+                className="w-96 h-full bg-yellow-100 border border-gray-200 rounded-xl rounded-tl-none shadow-sm "
+                style={{ width: "382.4px", height: "716px" }}
+            >
                 <div
                     id="card-type-tab-preview"
                     role="tabpanel"
@@ -84,6 +87,7 @@ export default function SideWidget(
                     <WidgetTabReserve
                         selectedChairId={selectedChairId}
                         chairData={chairData}
+                        payload={payload}
                         reservations={reservations}
                     />
                 </div>

@@ -17,7 +17,7 @@ async function callCheckUser(email: string, password: string) {
 }
 
 export default function WidgetTabReserve(
-    { selectedChairId, chairData, reservations },
+    { selectedChairId, chairData, payload, reservations },
 ) {
     // エラーメッセージを管理
     const [reserveDateError, setReserveDateError] = useState("");
@@ -83,7 +83,7 @@ export default function WidgetTabReserve(
         if (isValid) {
             try {
                 const requestData = {
-                    user_id: 1, // ユーザーID
+                    user_id: payload.id, // ユーザーID
                     seat_id: selectedChairId, // 選択された席のID
                     start_date:
                         `${event.target.startdate.value}T${event.target.starttime.value}:00`,
