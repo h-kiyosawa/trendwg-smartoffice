@@ -265,7 +265,7 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
     };
 
     return (
-        <div class="window-container relative overflow-hidden w-[1000px] h-[700px] border-4 border-solid border-green-400">
+        <div class="window-container relative overflow-hidden w-[1100px] h-[700px] border-4 border-solid border-green-400">
             <div
                 ref={svgRef}
                 onWheel={handleWheel}
