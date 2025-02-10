@@ -1,8 +1,8 @@
 import { decodeBase64 } from "$std/encoding/base64.ts";
+import * as djwt from "https://deno.land/x/djwt@v2.8/mod.ts";
 
-import * as djwt from "djwt/mod.ts";
-
-const JWT_CRYPTO_KEY = "O6YFIfGzSS4y8djOUAjDYS7fHBbDEMq2FnpG6F9ZWzLXBymW4T2s95FXjWpVzOWwnzQsRhawCyBkfpKiShLNs6fVb8BESkjpdtJrlfOZApIYQs9SI2AWNnxCU4ZpsPtmfayljoNfgIExwxepu2NaWr06LSL9/1KcO86evQ9qDUE=";
+const JWT_CRYPTO_KEY =
+  "O6YFIfGzSS4y8djOUAjDYS7fHBbDEMq2FnpG6F9ZWzLXBymW4T2s95FXjWpVzOWwnzQsRhawCyBkfpKiShLNs6fVb8BESkjpdtJrlfOZApIYQs9SI2AWNnxCU4ZpsPtmfayljoNfgIExwxepu2NaWr06LSL9/1KcO86evQ9qDUE=";
 
 //const encodedKey = Deno.env.get("JWT_CRYPTO_KEY") || "";
 const encodedKey = JWT_CRYPTO_KEY || "";
@@ -34,4 +34,14 @@ export async function inspectAlgorithm(token: string) {
 
 export async function getJwtPayload(token: string) {
   return await djwt.verify(token, key);
+}
+
+export async function verifyJwt(token: string) {
+  try {
+    const payload = await djwt.verify(token, key);
+    return payload;
+  } catch (error) {
+    console.error("JWT verification failed:", error);
+    return null;
+  }
 }

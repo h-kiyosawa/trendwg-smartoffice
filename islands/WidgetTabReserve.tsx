@@ -174,7 +174,12 @@ export default function WidgetTabReserve(
                                                     </tr>
                                                 </thead>
                                                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                                                    {reservations.map((
+                                                    {reservations.sort((a, b) =>
+                                                        new Date(a.start_date)
+                                                            .getTime() -
+                                                        new Date(b.start_date)
+                                                            .getTime()
+                                                    ).map((
                                                         reservation,
                                                     ) => (
                                                         <tr

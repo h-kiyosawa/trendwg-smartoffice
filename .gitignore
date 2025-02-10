@@ -5,6 +5,10 @@
 .env.production.local
 .env.local
 
+# プロフィールアイコンはデフォルトを除いて無視
+static/profile_picture/*
+!static/profile_picture/profile_picture_DEFAULT.jpg
+
 # Fresh build directory
 _fresh/
 # npm dependencies
