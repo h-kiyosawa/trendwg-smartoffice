@@ -5,8 +5,8 @@ import { HandlerContext } from "$fresh/server.ts";
 interface User {
     id: number;
     name: string;
+    profile_picture_url: string;
 }
-
 
 export const handler = async (req: Request, _ctx: HandlerContext) => {
     try {
@@ -17,23 +17,28 @@ export const handler = async (req: Request, _ctx: HandlerContext) => {
         const {
             user_id,
             name,
+            profile_picture_url,
         } = body;
-        const user = { id: user_id, name: name }
-  
+        const user = {
+            id: user_id,
+            name: name,
+            profile_picture: profile_picture_url,
+        };
+
         const response = new Response("", {
             status: 303,
             headers: { Location: "/" },
-          });
+        });
         setCookie(response.headers, {
-          name: "token",
-          value: await createJwt(user),
-          path: "/",
-          secure: false,
-          httpOnly: false,
+            name: "token",
+            value: await createJwt(user),
+            path: "/",
+            secure: false,
+            httpOnly: false,
         });
 
         response.headers.set("Location", "/"); // ホームページにリダイレクト
-  
+
         return response;
     } catch (error) {
         console.error("Error creating reservation:", error);

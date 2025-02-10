@@ -12,7 +12,7 @@ async function callCheckUser(email: string, password: string) {
     return await response.json();
 }
 
-export default function WidgetTabLogin({ payload },) {
+export default function WidgetTabLogin({ payload }) {
     // エラーメッセージを管理
     const [userValidateError, setUserError] = useState("");
 
@@ -42,42 +42,48 @@ export default function WidgetTabLogin({ payload },) {
         if (isValid) {
             try {
                 const requestData = {
-                   user_id: userResult.user_id,
-                   name: userResult.name,
-                }
-   
+                    user_id: userResult.user_id,
+                    name: userResult.name,
+                    profile_picture_url: userResult.profile_picture_url,
+                };
+
                 const loginApiResponse = await fetch("/api/loginApi", {
-                   method: "POST",
-                   headers: {
-                       "Content-Type": "application/json",
-                   },
-                   body: JSON.stringify(requestData),
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(requestData),
                 });
 
                 const response = new Response("", {
                     status: 303,
                     headers: { Location: "/" },
                 });
-   
+
                 if (!loginApiResponse.ok) {
-                   throw new Error("login failed");
+                    throw new Error("login failed");
                 } else {
                     window.location.href = "/";
                 }
-           } catch (error) {
-               console.error("error", error);
-           }
+            } catch (error) {
+                console.error("error", error);
+            }
         } else {
             setUserError("ユーザー情報が間違っています。");
         }
-    }
+    };
     if (!payload) {
         return (
             <div class="p-4 sm:p-7">
                 <div class="mt-5">
                     <form onSubmit={handleSubmit}>
                         <div class="mb-4">
-                            <label for="email" class="block text-sm font-medium text-gray-700">メールアドレス</label>
+                            <label
+                                for="email"
+                                class="block text-sm font-medium text-gray-700"
+                            >
+                                メールアドレス
+                            </label>
                             <input
                                 type="email"
                                 id="email"
@@ -89,7 +95,12 @@ export default function WidgetTabLogin({ payload },) {
                         </div>
 
                         <div class="mb-6">
-                            <label for="password" class="block text-sm font-medium text-gray-700">パスワード</label>
+                            <label
+                                for="password"
+                                class="block text-sm font-medium text-gray-700"
+                            >
+                                パスワード
+                            </label>
                             <input
                                 type="password"
                                 id="password"
@@ -109,8 +120,7 @@ export default function WidgetTabLogin({ payload },) {
                                         <p>{userValidateError}</p>
                                     </strong>
                                 </div>
-                            )
-                        }
+                            )}
                         <div class="grid gap-y-4">
                             <button
                                 type="submit"
@@ -123,8 +133,10 @@ export default function WidgetTabLogin({ payload },) {
                     <div class="text-right">
                         <label>
                             アカウントが未登録ですか？
-                         </label>
-                        <a href="/auth/register" class="underline">アカウントの作成</a>
+                        </label>
+                        <a href="/auth/register" class="underline">
+                            アカウントの作成
+                        </a>
                     </div>
                 </div>
             </div>
@@ -134,6 +146,6 @@ export default function WidgetTabLogin({ payload },) {
             <div class="mt-5">
                 ログインしています。
             </div>
-        </div>
+        </div>;
     }
 }

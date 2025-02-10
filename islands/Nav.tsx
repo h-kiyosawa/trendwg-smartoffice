@@ -82,11 +82,21 @@ const Nav = ({ payload }) => {
                 </div>
                 {navOpen && payload && (
                     <div className={NAV_STYLE}>
-                        <div>
-                            <label className="text-white">
-                                ログインユーザー：{payload.name}
-                            </label>
-
+                        <div className="flex items-center space-x-3">
+                            {/* アイコン画像 */}
+                            <a href="/profile">
+                                <img
+                                    src={asset(`/${payload.profile_picture}`)}
+                                    alt="User Avatar"
+                                    className="w-8 h-8 rounded-full cursor-pointer hover:opacity-80"
+                                />
+                            </a>
+                            {/* ユーザー名 */}
+                            <a href="/profile">
+                                <label className="text-white cursor-pointer hover:opacity-80">
+                                    ログインユーザー：{payload.name}
+                                </label>
+                            </a>
                             <a
                                 href="/logout"
                                 className={`${BUTTON_STYLE} ml-10`}
