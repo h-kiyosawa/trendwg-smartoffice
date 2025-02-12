@@ -10,6 +10,10 @@ export default function SideWidget(
         "card-type-tab-preview",
     );
 
+    if (!payload) {
+        setSelectedTab("card-type-tab-2");
+    }
+
     const handleTabClick = (tabId) => {
         setSelectedTab(tabId);
     };
@@ -23,21 +27,23 @@ export default function SideWidget(
                     role="tablist"
                     aria-orientation="horizontal"
                 >
-                    <button
-                        type="button"
-                        className={`-mb-px py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium text-center border rounded-t-lg focus:outline-none 
-                            ${
-                            selectedTab === "card-type-tab-preview"
-                                ? "bg-yellow-100 text-blue-600 border-b-transparent"
-                                : "bg-gray-50 text-gray-500 hover:text-gray-700"
-                        }`}
-                        id="card-type-tab-item-1"
-                        aria-selected={selectedTab === "card-type-tab-preview"}
-                        onClick={() => handleTabClick("card-type-tab-preview")}
-                        role="tab"
-                    >
-                        予約
-                    </button>
+                    {payload && (
+                        <button
+                            type="button"
+                            className={`-mb-px py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium text-center border rounded-t-lg focus:outline-none 
+                                ${
+                                selectedTab === "card-type-tab-preview"
+                                    ? "bg-yellow-100 text-blue-600 border-b-transparent"
+                                    : "bg-gray-50 text-gray-500 hover:text-gray-700"
+                            }`}
+                            id="card-type-tab-item-1"
+                            aria-selected={selectedTab === "card-type-tab-preview"}
+                            onClick={() => handleTabClick("card-type-tab-preview")}
+                            role="tab"
+                        >
+                            予約
+                        </button>
+                    )}
                     {!payload && (
                         <button
                             type="button"

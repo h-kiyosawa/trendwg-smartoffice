@@ -28,8 +28,15 @@ export async function createJwt(src: Object) {
 export async function inspectAlgorithm(token: string) {
   // ヘッダー内容が想定通りのものか検証する
   // alg を none にする署名回避を防御しておく
-  const [header] = await djwt.decode(token, key);
-  return header.alg === "HS512" && header.typ === "JWT";
+  try {
+    const [header] = await djwt.decode(token, key);
+    return header.alg === "HS512" && header.typ === "JWT";
+  } 
+  catch (error)
+  {
+    console.log("tokenが存在しませんでした。");
+    return null;
+  }
 }
 
 export async function getJwtPayload(token: string) {

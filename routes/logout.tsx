@@ -18,7 +18,7 @@ export const handler = (_req: Request, _ctx: HandlerContext) => {
         httpOnly: false,
     });
 
-  return response;
+    return response;
 };
 
 export default function Logout() {
