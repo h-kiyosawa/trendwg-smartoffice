@@ -16,13 +16,26 @@ export const handler = async (req: Request, _ctx: HandlerContext) => {
             remarks,
         } = body;
 
+        // 同じ seat_id で時間が重なっている予約が存在するか確認
+        const existingReservation = await client.queryArray(
+            "SELECT * FROM reservations WHERE seat_id = $1 AND ((start_date < $2 AND end_date > $2) OR (start_date < $3 AND end_date > $3) OR (start_date >= $2 AND end_date <= $3))",
+            [seat_id, start_date, end_date]
+        );
+
+        if (existingReservation.rows.length > 0) {
+            return new Response(
+                JSON.stringify({ error: '既に予約されている時間帯です。' }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
         // データベースに挿入
         const result = await client.queryArray(
             `INSERT INTO reservations (
-        user_id, seat_id, start_date, end_date, status, remarks, reserved_at, created_at, updated_at
-      ) VALUES (
-        $1, $2, $3, $4, $5, $6, NOW(), NOW(), NOW()
-      ) RETURNING reservation_id`,
+                user_id, seat_id, start_date, end_date, status, remarks, reserved_at, created_at, updated_at
+            ) VALUES (
+                $1, $2, $3, $4, $5, $6, NOW(), NOW(), NOW()
+            ) RETURNING reservation_id`,
             [user_id, seat_id, start_date, end_date, status, remarks],
         );
 

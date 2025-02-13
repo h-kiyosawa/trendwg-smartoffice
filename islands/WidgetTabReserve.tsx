@@ -79,44 +79,51 @@ export default function WidgetTabReserve(
             isValid = false;
         }
 
-        // バリデーションが成功した場合の処理
-        if (isValid) {
-            try {
-                const requestData = {
-                    user_id: payload.id, // ユーザーID
-                    seat_id: selectedChairId, // 選択された席のID
-                    start_date:
-                        `${event.target.startdate.value}T${event.target.starttime.value}:00`,
-                    end_date:
-                        `${event.target.enddate.value}T${event.target.endtime.value}:00`,
-                    status: 1, // 状態
-                    remarks: event.target.message.value, // 備考
-                };
+    // バリデーションが成功した場合の処理
+    if (isValid) {
+        const startDate = `${event.target.startdate.value}T${event.target.starttime.value}:00`;
+        const endDate = `${event.target.enddate.value}T${event.target.endtime.value}:00`;
 
-                const response = await fetch("/api/createReservation", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(requestData),
-                });
-
-                if (!response.ok) {
-                    throw new Error("Reservation failed");
-                }
-
-                const data = await response.json();
-                alert(`予約が成功しました！予約ID: ${data.reservation_id}`);
-            } catch (error) {
-                console.error("Error during reservation:", error);
-                alert("予約に失敗しました。もう一度お試しください。");
-            }
-        } else {
-            setReserveDateError(reserveErrorMsg || "");
-            setUserError(userCheckErrorMsg || "");
+        // start_date と end_date が一致していないかチェック
+        if (startDate === endDate) {
+            alert("開始日時と終了日時が一致しています。終了日時を確認してください。");
+            return;  // リクエストを中断
         }
-    };
 
+        try {
+            const requestData = {
+                user_id: payload.id, // ユーザーID
+                seat_id: selectedChairId, // 選択された席のID
+                start_date: startDate,
+                end_date: endDate,
+                status: 1, // 状態
+                remarks: event.target.message.value, // 備考
+            };
+
+            const response = await fetch("/api/createReservation", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Reservation failed");
+            }
+
+            const data = await response.json();
+            alert(`予約が成功しました！予約ID: ${data.reservation_id}`);
+        } catch (error) {
+            console.error("Error during reservation:", error);
+            alert(error.message || "予約に失敗しました。もう一度お試しください。");
+        }
+    } else {
+        setReserveDateError(reserveErrorMsg || "");
+        setUserError(userCheckErrorMsg || "");
+    }
+};
     //日付表示
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
