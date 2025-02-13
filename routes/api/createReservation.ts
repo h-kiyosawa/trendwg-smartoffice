@@ -18,13 +18,18 @@ export const handler = async (req: Request, _ctx: HandlerContext) => {
 
         // 同じ seat_id で時間が重なっている予約が存在するか確認
         const existingReservation = await client.queryArray(
-            "SELECT * FROM reservations WHERE seat_id = $1 AND ((start_date < $2 AND end_date > $2) OR (start_date < $3 AND end_date > $3) OR (start_date >= $2 AND end_date <= $3))",
+            "SELECT start_date, end_date FROM reservations WHERE seat_id = $1 AND ((start_date < $2 AND end_date > $2) OR (start_date < $3 AND end_date > $3) OR (start_date >= $2 AND end_date <= $3))",
             [seat_id, start_date, end_date]
         );
 
         if (existingReservation.rows.length > 0) {
+            const overlappingReservations = existingReservation.rows.map(row => {
+                const startDate = new Date(row[0]).toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+                const endDate = new Date(row[1]).toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+                return `開始日時: ${startDate}, 終了日時: ${endDate}`;
+            }).join("\n");
             return new Response(
-                JSON.stringify({ error: '既に予約されている時間帯です。' }),
+                JSON.stringify({ error: `同じ席で時間が重なっている予約が既に存在します。\n予約情報:${overlappingReservations}` }),
                 { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
