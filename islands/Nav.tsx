@@ -98,6 +98,12 @@ const Nav = ({ payload }) => {
                                 </label>
                             </a>
                             <a
+                                href="/mapping"
+                                className={`${BUTTON_STYLE} ml-10`}
+                            >
+                                MapEdit
+                            </a>
+                            <a
                                 href="/logout"
                                 className={`${BUTTON_STYLE} ml-10`}
                             >
