@@ -133,6 +133,12 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
     const [highlightedChairId, setHighlightedChairId] = useState(null); // ハイライト対象の状態を管理
 
     useEffect(() => {
+        // 新しいマップが選ばれたときにオフセットとスケールをリセット
+        setScale(1);  // ズームを初期値に戻す
+        setOffset({ x: 0, y: 0 });  // オフセットも初期位置に戻す
+    }, [selectedMap]);  // selectedMapが変更される度にリセット
+
+    useEffect(() => {
         const svgElement = svgRef.current;
 
         if (!svgElement || !selectedMap) return;
@@ -275,7 +281,7 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
                     transform:
                         `translate(${offset.x}px, ${offset.y}px) scale(${scale})`,
                     transformOrigin: "0 0", // 左上を基準にズーム
-                    transition: "transform 0.1s ease-out",
+                    transition: "none", // これでアニメーションなしに切り替える
                 }}
                 class="absolute"
             >
