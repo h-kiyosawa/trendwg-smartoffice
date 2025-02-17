@@ -75,7 +75,6 @@ export default function SvgEditor() {
             selectedElement.setAttribute("type", "chair");
             selectedElement.setAttribute("id", chairId);
             selectedElement.setAttribute("chairname", chairName);
-
             const parser = new DOMParser();
             const doc = parser.parseFromString(svgContent, "image/svg+xml");
             const targetChair = doc.querySelector(`[id='${chairId}']`);
