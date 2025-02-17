@@ -18,10 +18,20 @@ export default function SvgEditor() {
     const originalStyles = useRef(new Map());
 
     useEffect(() => {
-        if (svgRef.current) {
-            svgRef.current.innerHTML = svgContent;
+        if (svgRef.current && chairs.length > 0) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(svgContent, "image/svg+xml");
+
+            chairs.forEach((chair) => {
+                const targetChair = doc.querySelector([id = "${chair.id}"]);
+                if (targetChair) {
+                    targetChair.setAttribute("chairname", chair.chairname);
+                }
+            });
+
+            setSvgContent(new XMLSerializer().serializeToString(doc));
         }
-    }, [svgContent]);
+    }, [chairs]);
 
     const reloadSvg = () => {
         setSvgContent((prev) => prev); // Force re-render
@@ -65,15 +75,6 @@ export default function SvgEditor() {
             selectedElement.setAttribute("type", "chair");
             selectedElement.setAttribute("id", chairId);
             selectedElement.setAttribute("chairname", chairName);
-
-            setChairs((prevChairs) => {
-                return prevChairs.map((chair) =>
-                    chair.id === chairId
-                        ? { ...chair, chairname: chairName }
-                        : chair
-                );
-            });
-
             const parser = new DOMParser();
             const doc = parser.parseFromString(svgContent, "image/svg+xml");
             const targetChair = doc.querySelector(`[id='${chairId}']`);
@@ -124,9 +125,14 @@ export default function SvgEditor() {
     };
 
     const handleMapRegister = () => {
-        if (!svgContent) return;
+        if (!svgRef.current) return;
+
         const parser = new DOMParser();
-        const doc = parser.parseFromString(svgContent, "image/svg+xml");
+        const doc = parser.parseFromString(
+            svgRef.current.innerHTML,
+            "image/svg+xml",
+        );
+
         const chairElements = doc.querySelectorAll('[type="chair"]');
         const extractedChairs = Array.from(chairElements).map((chair) => ({
             id: chair.getAttribute("id"),
