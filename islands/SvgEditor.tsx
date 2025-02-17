@@ -143,12 +143,16 @@ export default function SvgEditor() {
     };
 
     const handleRegisterMap = async () => {
+        if (!svgRef.current) return;
+
+        const updatedSvgContent = svgRef.current.innerHTML; // 最新のSVGデータを取得
+
         const response = await fetch("/api/registerMap", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 map_name: mapName,
-                map_data: svgContent,
+                map_data: updatedSvgContent, // 修正後
                 chairs: chairs.map((chair) => ({
                     id: chair.id,
                     chairname: chair.chairname,
@@ -165,7 +169,6 @@ export default function SvgEditor() {
         } else {
             alert("登録エラー: " + result.error);
         }
-        reloadSvg();
     };
 
     const handleWheel = (event) => {
