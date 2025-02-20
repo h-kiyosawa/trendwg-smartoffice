@@ -8,6 +8,7 @@ export default function OfficeMap({ mapData, chairData, payload }) {
     const [reservations, setReservations] = useState([]);
     const [selectedMap, setSelectedMap] = useState(null);
     const [allReservations, setAllReservations] = useState(new Map());
+    const [currentReservations, setCurrentReservations] = useState(new Map());
 
     // **初回にステータスを更新し、チェックイン前の全予約データを取得**
     useEffect(() => {
@@ -86,6 +87,29 @@ export default function OfficeMap({ mapData, chairData, payload }) {
         fetchAndUpdateReservations();
     }, []); // 初回レンダリング時に実行
 
+    useEffect(() => {
+        const updateCurrentReservations = () => {
+            const now = new Date();
+            const activeReservations = new Map();
+
+            allReservations.forEach((reservations, seatId) => {
+                const activeRes = reservations.find((res) => {
+                    const start = new Date(res.start_date);
+                    const end = new Date(res.end_date);
+                    return start <= now && now <= end;
+                });
+
+                if (activeRes) {
+                    activeReservations.set(seatId, activeRes.user_id);
+                }
+            });
+
+            setCurrentReservations(activeReservations);
+        };
+
+        updateCurrentReservations();
+    }, [allReservations]);
+
     // クリック時にキャッシュから取得
     const handleChairClick = (id) => {
         setSelectedChairId(id);
@@ -119,6 +143,8 @@ export default function OfficeMap({ mapData, chairData, payload }) {
                     <SvgComponent
                         handleChairClick={handleChairClick}
                         selectedMap={selectedMap}
+                        currentReservations={currentReservations}
+                        payload={payload}
                     />
                 </div>
             </div>
@@ -126,7 +152,9 @@ export default function OfficeMap({ mapData, chairData, payload }) {
     );
 }
 
-const SvgComponent = ({ handleChairClick, selectedMap }) => {
+const SvgComponent = (
+    { handleChairClick, selectedMap, currentReservations, payload },
+) => {
     const svgRef = useRef(null);
     const [scale, setScale] = useState(1);
     const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -134,9 +162,9 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
 
     useEffect(() => {
         // 新しいマップが選ばれたときにオフセットとスケールをリセット
-        setScale(1);  // ズームを初期値に戻す
-        setOffset({ x: 0, y: 0 });  // オフセットも初期位置に戻す
-    }, [selectedMap]);  // selectedMapが変更される度にリセット
+        setScale(1); // ズームを初期値に戻す
+        setOffset({ x: 0, y: 0 }); // オフセットも初期位置に戻す
+    }, [selectedMap]); // selectedMapが変更される度にリセット
 
     useEffect(() => {
         const svgElement = svgRef.current;
@@ -146,6 +174,83 @@ const SvgComponent = ({ handleChairClick, selectedMap }) => {
         // SVGを設定する
         svgElement.innerHTML = selectedMap.data; // selectedMap.dataがSVGのコンテンツ
     }, [selectedMap]); // selectedMapが変わったときに再実行
+
+    useEffect(() => {
+        const svgElement = svgRef.current.querySelector("svg");
+        if (!svgElement) return;
+
+        // <svg>内の画像をクリア
+        svgElement.querySelectorAll("image").forEach((img) => img.remove());
+
+        // 現在予約中の椅子にプロフィール画像を追加
+        currentReservations.forEach((userId, seatId) => {
+            const chairElement = svgElement.querySelector(`[id="${seatId}"]`);
+            if (!chairElement) return;
+
+            // 椅子のバウンディングボックス（座標とサイズ）を取得
+            const { x, y, width, height } = chairElement.getBBox();
+
+            // 椅子の回転情報を取得 (transform属性を解析)
+            const transform = chairElement.getAttribute("transform");
+            const rotationMatch = transform?.match(
+                /rotate\((\d+)\s+(\d+)\s+(\d+)\)/,
+            );
+            const rotationAngle = rotationMatch
+                ? parseFloat(rotationMatch[1])
+                : 0;
+
+            // アスペクト比を計算 (縦横比が1:1の場合を想定)
+            const aspectRatio = 1; // もし異なる画像アスペクト比がある場合は調整
+
+            // 最大の幅または高さに合わせて画像のサイズを決定
+            const maxWidth = width;
+            const maxHeight = height;
+
+            let imgWidth = maxWidth;
+            let imgHeight = maxWidth / aspectRatio;
+
+            if (imgHeight > maxHeight) {
+                imgHeight = maxHeight;
+                imgWidth = maxHeight * aspectRatio;
+            }
+
+            // 画像の位置を中央に配置（回転を補正）
+            const imgX = x + (width - imgWidth) / 2;
+            const imgY = y + (height - imgHeight) / 2;
+
+            // 新しいimage要素を作成
+            const imgElement = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "image",
+            );
+            imgElement.setAttribute("href", `/${payload.profile_picture}`);
+            imgElement.setAttribute("x", imgX.toString());
+            imgElement.setAttribute("y", imgY.toString());
+            imgElement.setAttribute("width", imgWidth.toString());
+            imgElement.setAttribute("height", imgHeight.toString());
+
+            // 画像を丸くするためにclip-pathを適用
+            imgElement.setAttribute(
+                "style",
+                "clip-path: circle(50% at 50% 50%);",
+            );
+
+            // 回転を適用
+            imgElement.setAttribute(
+                "transform",
+                `rotate(${rotationAngle} ${x + width / 2} ${y + height / 2})`,
+            );
+
+            // 画像にクリックイベントを妨げさせない
+            imgElement.setAttribute(
+                "style",
+                "clip-path: circle(50% at 50% 50%); pointer-events: none;",
+            );
+
+            // SVG内部に追加
+            svgElement.appendChild(imgElement);
+        });
+    }, [currentReservations, selectedMap]);
 
     const handleChairElementClick = (element) => {
         const chairId = Number(element.id); // SVG要素のidを取得
