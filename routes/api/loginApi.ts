@@ -6,6 +6,7 @@ interface User {
     id: number;
     name: string;
     profile_picture_url: string;
+    permissions: string;
 }
 
 export const handler = async (req: Request, _ctx: HandlerContext) => {
@@ -18,11 +19,13 @@ export const handler = async (req: Request, _ctx: HandlerContext) => {
             user_id,
             name,
             profile_picture_url,
+            permissions,
         } = body;
         const user = {
             id: user_id,
             name: name,
             profile_picture: profile_picture_url,
+            permissions: permissions,
         };
 
         const response = new Response("", {

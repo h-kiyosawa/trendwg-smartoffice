@@ -45,6 +45,7 @@ export default function WidgetTabLogin({ payload }) {
                     user_id: userResult.user_id,
                     name: userResult.name,
                     profile_picture_url: userResult.profile_picture_url,
+                    permissions: userResult.permissions,
                 };
 
                 const loginApiResponse = await fetch("/api/loginApi", {

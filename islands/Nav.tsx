@@ -97,12 +97,12 @@ const Nav = ({ payload }) => {
                                     ログインユーザー：{payload.name}
                                 </label>
                             </a>
-                            <a
-                                href="/mapping"
-                                className={`${BUTTON_STYLE} ml-10`}
-                            >
-                                MapEdit
-                            </a>
+                            {/* MapEditリンク: permissionsが1のときのみ表示 */}
+                            {payload.permissions === "1" && (
+                                <a href="/mapping" className={`${BUTTON_STYLE} ml-10`}>
+                                    MapEdit
+                                </a>
+                            )}
                             <a
                                 href="/logout"
                                 className={`${BUTTON_STYLE} ml-10`}

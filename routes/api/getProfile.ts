@@ -36,6 +36,7 @@ export const handler = async (req: Request, _ctx: HandlerContext) => {
                 id: payload.id,
                 name: payload.name,
                 profile_picture_url: payload.profile_picture,
+                permissions: payload.permissions,
             }),
             { status: 200, headers: { "Content-Type": "application/json" } },
         );
