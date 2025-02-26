@@ -1,5 +1,5 @@
 import DatePicker from "./DatePicker.tsx";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import TimePicker from "./TimePicker.tsx";
 import StatusBadge from "../components/StatusBadge.tsx";
 import { CHAIR_ICON_SVG } from "../static/svgData.ts";
@@ -17,11 +17,21 @@ async function callCheckUser(email: string, password: string) {
 }
 
 export default function WidgetTabReserve(
-    { selectedChairId, chairData, payload, reservations },
+    {
+        selectedChairId,
+        chairData,
+        payload,
+        reservations,
+        setUpdatedReservations,
+    },
 ) {
     // エラーメッセージを管理
     const [reserveDateError, setReserveDateError] = useState("");
     const [userError, setUserError] = useState("");
+
+    useEffect(() => {
+        setUpdatedReservations(reservations);
+    }, [reservations]);
 
     const chairReservations = reservations.filter(
         (reservation) => reservation.seat_id === selectedChairId,
@@ -79,51 +89,70 @@ export default function WidgetTabReserve(
             isValid = false;
         }
 
-    // バリデーションが成功した場合の処理
-    if (isValid) {
-        const startDate = `${event.target.startdate.value}T${event.target.starttime.value}:00`;
-        const endDate = `${event.target.enddate.value}T${event.target.endtime.value}:00`;
+        // バリデーションが成功した場合の処理
+        if (isValid) {
+            const startDate =
+                `${event.target.startdate.value}T${event.target.starttime.value}:00`;
+            const endDate =
+                `${event.target.enddate.value}T${event.target.endtime.value}:00`;
 
-        // start_date と end_date が一致していないかチェック
-        if (startDate === endDate) {
-            alert("開始日時と終了日時が一致しています。終了日時を確認してください。");
-            return;  // リクエストを中断
-        }
-
-        try {
-            const requestData = {
-                user_id: payload.id, // ユーザーID
-                seat_id: selectedChairId, // 選択された席のID
-                start_date: startDate,
-                end_date: endDate,
-                status: 1, // 状態
-                remarks: event.target.message.value, // 備考
-            };
-
-            const response = await fetch("/api/createReservation", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(requestData),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Reservation failed");
+            // start_date と end_date が一致していないかチェック
+            if (startDate === endDate) {
+                alert(
+                    "開始日時と終了日時が一致しています。終了日時を確認してください。",
+                );
+                return; // リクエストを中断
             }
 
-            const data = await response.json();
-            alert(`予約が成功しました！予約ID: ${data.reservation_id}`);
-        } catch (error) {
-            console.error("Error during reservation:", error);
-            alert(error.message || "予約に失敗しました。もう一度お試しください。");
+            try {
+                const requestData = {
+                    user_id: payload.id, // ユーザーID
+                    seat_id: selectedChairId, // 選択された席のID
+                    start_date: startDate,
+                    end_date: endDate,
+                    status: 1, // 状態
+                    remarks: event.target.message.value, // 備考
+                };
+
+                const response = await fetch("/api/createReservation", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(requestData),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || "Reservation failed");
+                }
+
+                const data = await response.json();
+                alert(`予約が成功しました！予約ID: ${data.reservation_id}`);
+
+                const newReservation = {
+                    id: data.reservation_id,
+                    seat_id: selectedChairId,
+                    start_date: startDate,
+                    end_date: endDate,
+                    status: 1, // 予約成功時の状態を追加
+                    remarks: requestData.remarks,
+                };
+                setUpdatedReservations((
+                    prevReservations,
+                ) => [...prevReservations, newReservation]);
+            } catch (error) {
+                console.error("Error during reservation:", error);
+                alert(
+                    error.message ||
+                        "予約に失敗しました。もう一度お試しください。",
+                );
+            }
+        } else {
+            setReserveDateError(reserveErrorMsg || "");
+            setUserError(userCheckErrorMsg || "");
         }
-    } else {
-        setReserveDateError(reserveErrorMsg || "");
-        setUserError(userCheckErrorMsg || "");
-    }
-};
+    };
     //日付表示
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -181,9 +210,11 @@ export default function WidgetTabReserve(
                                                     </tr>
                                                 </thead>
                                                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                                                    {reservations.sort((a, b) =>
-                                                        new Date(a.start_date)
-                                                            .getTime() -
+                                                    {reservations.sort((
+                                                        a,
+                                                        b,
+                                                    ) => new Date(a.start_date)
+                                                        .getTime() -
                                                         new Date(b.start_date)
                                                             .getTime()
                                                     ).map((

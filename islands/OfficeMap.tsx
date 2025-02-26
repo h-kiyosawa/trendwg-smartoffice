@@ -9,6 +9,9 @@ export default function OfficeMap({ mapData, chairData, payload }) {
     const [selectedMap, setSelectedMap] = useState(null);
     const [allReservations, setAllReservations] = useState(new Map());
     const [currentReservations, setCurrentReservations] = useState(new Map());
+    const [updatedReservations, setUpdatedReservations] = useState(
+        reservations,
+    );
 
     // **初回にステータスを更新し、チェックイン前の全予約データを取得**
     useEffect(() => {
@@ -100,7 +103,10 @@ export default function OfficeMap({ mapData, chairData, payload }) {
                 });
 
                 if (activeRes) {
-                    activeReservations.set(seatId, activeRes.user_id);
+                    activeReservations.set(
+                        seatId,
+                        activeRes.profile_picture_url,
+                    );
                 }
             });
 
@@ -133,6 +139,7 @@ export default function OfficeMap({ mapData, chairData, payload }) {
                     chairData={chairData}
                     payload={payload}
                     reservations={reservations}
+                    setUpdatedReservations={setUpdatedReservations}
                 />
             </div>
 
@@ -183,7 +190,7 @@ const SvgComponent = (
         svgElement.querySelectorAll("image").forEach((img) => img.remove());
 
         // 現在予約中の椅子にプロフィール画像を追加
-        currentReservations.forEach((userId, seatId) => {
+        currentReservations.forEach((profilePicture, seatId) => {
             const chairElement = svgElement.querySelector(`[id="${seatId}"]`);
             if (!chairElement) return;
 
@@ -223,7 +230,7 @@ const SvgComponent = (
                 "http://www.w3.org/2000/svg",
                 "image",
             );
-            imgElement.setAttribute("href", `/${payload.profile_picture}`);
+            imgElement.setAttribute("href", `/${profilePicture}`);
             imgElement.setAttribute("x", imgX.toString());
             imgElement.setAttribute("y", imgY.toString());
             imgElement.setAttribute("width", imgWidth.toString());

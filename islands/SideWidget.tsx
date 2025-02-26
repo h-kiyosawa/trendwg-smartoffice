@@ -4,7 +4,13 @@ import WidgetTabLogin from "./WidgetTabLogin.tsx";
 import { JSX } from "preact";
 
 export default function SideWidget(
-    { selectedChairId, chairData, payload, reservations },
+    {
+        selectedChairId,
+        chairData,
+        payload,
+        reservations,
+        setUpdatedReservations,
+    },
 ): JSX.Element {
     const [selectedTab, setSelectedTab] = useState(
         "card-type-tab-preview",
@@ -37,8 +43,10 @@ export default function SideWidget(
                                     : "bg-gray-50 text-gray-500 hover:text-gray-700"
                             }`}
                             id="card-type-tab-item-1"
-                            aria-selected={selectedTab === "card-type-tab-preview"}
-                            onClick={() => handleTabClick("card-type-tab-preview")}
+                            aria-selected={selectedTab ===
+                                "card-type-tab-preview"}
+                            onClick={() =>
+                                handleTabClick("card-type-tab-preview")}
                             role="tab"
                         >
                             予約
@@ -95,6 +103,7 @@ export default function SideWidget(
                         chairData={chairData}
                         payload={payload}
                         reservations={reservations}
+                        setUpdatedReservations={setUpdatedReservations}
                     />
                 </div>
                 <div
