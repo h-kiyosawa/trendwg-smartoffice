@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import MapSelector from "./MapSelector.tsx";
 import SideWidget from "./SideWidget.tsx";
 import { NOMAP_DINO_SVG } from "../static/svgData.ts";
+import TimeSlider from "./TimeSlider.tsx";
 
 export default function OfficeMap({ mapData, chairData, payload }) {
     const [selectedChairId, setSelectedChairId] = useState(null);
@@ -10,82 +11,91 @@ export default function OfficeMap({ mapData, chairData, payload }) {
     const [allReservations, setAllReservations] = useState(new Map());
     const [currentReservations, setCurrentReservations] = useState(new Map());
 
+    const [selectedTime, setSelectedTime] = useState(null);
+    const [selectedDate, setSelectedDate] = useState("");
+
     // **初回にステータスを更新し、チェックイン前の全予約データを取得**
-    useEffect(() => {
-        const fetchAndUpdateReservations = async () => {
-            try {
-                // status=1で予約を取得
-                const response = await fetch(`/api/getReservation?status=1`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch reservations");
-                }
-
-                const data = await response.json();
-                const reservationsToUpdate = [];
-
-                // 現在時刻を取得
-                const now = new Date();
-
-                // 取得した予約の終了時刻が過去のものをチェックし、ステータスを更新
-                data.reservations.forEach((reservation) => {
-                    const endDate = new Date(reservation.end_date);
-                    if (endDate < now) {
-                        reservationsToUpdate.push(reservation.reservation_id); // 更新対象の予約IDを収集
-                    }
-                });
-
-                // ステータスを更新するAPIリクエスト
-                if (reservationsToUpdate.length > 0) {
-                    const updateResponse = await fetch(
-                        "/api/updateReservation",
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                reservationIds: reservationsToUpdate,
-                                newStatus: 5,
-                            }),
-                        },
-                    );
-
-                    if (!updateResponse.ok) {
-                        throw new Error(
-                            "Failed to update reservation statuses",
-                        );
-                    }
-                }
-
-                // 更新後、再度予約データを取得
-                const updatedResponse = await fetch(
-                    `/api/getReservation?status=1`,
-                );
-                if (!updatedResponse.ok) {
-                    throw new Error("Failed to fetch updated reservations");
-                }
-
-                const updatedData = await updatedResponse.json();
-                const reservationsMap = new Map();
-
-                updatedData.reservations.forEach((res) => {
-                    if (!reservationsMap.has(res.seat_id)) {
-                        reservationsMap.set(res.seat_id, []);
-                    }
-                    reservationsMap.get(res.seat_id).push(res);
-                });
-
-                setAllReservations(reservationsMap);
-            } catch (error) {
-                console.error(
-                    "Error fetching and updating reservations:",
-                    error,
-                );
+    const fetchAndUpdateReservations = async () => {
+        try {
+            // status=1で予約を取得
+            const response = await fetch(`/api/getReservation?status=1`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch reservations");
             }
-        };
 
+            const data = await response.json();
+            const reservationsToUpdate = [];
+
+            // 現在時刻を取得
+            const now = new Date();
+
+            // 取得した予約の終了時刻が過去のものをチェックし、ステータスを更新
+            data.reservations.forEach((reservation) => {
+                const endDate = new Date(
+                    Date.parse(
+                        new Date(reservation.end_date).toLocaleString("ja-JP", {
+                            timeZone: "Asia/Tokyo",
+                        }),
+                    ),
+                );
+                if (endDate < now) {
+                    reservationsToUpdate.push(reservation.reservation_id); // 更新対象の予約IDを収集
+                }
+            });
+
+            // ステータスを更新するAPIリクエスト
+            if (reservationsToUpdate.length > 0) {
+                const updateResponse = await fetch(
+                    "/api/updateReservation",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            reservationIds: reservationsToUpdate,
+                            newStatus: 5,
+                        }),
+                    },
+                );
+
+                if (!updateResponse.ok) {
+                    throw new Error(
+                        "Failed to update reservation statuses",
+                    );
+                }
+            }
+
+            // 更新後、再度予約データを取得
+            const updatedResponse = await fetch(
+                `/api/getReservation?status=1`,
+            );
+            if (!updatedResponse.ok) {
+                throw new Error("Failed to fetch updated reservations");
+            }
+
+            const updatedData = await updatedResponse.json();
+            const reservationsMap = new Map();
+
+            updatedData.reservations.forEach((res) => {
+                if (!reservationsMap.has(res.seat_id)) {
+                    reservationsMap.set(res.seat_id, []);
+                }
+                reservationsMap.get(res.seat_id).push(res);
+            });
+
+            setAllReservations(reservationsMap);
+        } catch (error) {
+            console.error(
+                "Error fetching and updating reservations:",
+                error,
+            );
+        }
+    };
+
+    useEffect(() => {
         fetchAndUpdateReservations();
-    }, []); // 初回レンダリング時に実行
+    }, []);
 
     useEffect(() => {
         const updateCurrentReservations = () => {
@@ -94,13 +104,28 @@ export default function OfficeMap({ mapData, chairData, payload }) {
 
             allReservations.forEach((reservations, seatId) => {
                 const activeRes = reservations.find((res) => {
-                    const start = new Date(res.start_date);
-                    const end = new Date(res.end_date);
+                    const start = new Date(
+                        Date.parse(
+                            new Date(res.start_date).toLocaleString("ja-JP", {
+                                timeZone: "Asia/Tokyo",
+                            }),
+                        ),
+                    );
+                    const end = new Date(
+                        Date.parse(
+                            new Date(res.end_date).toLocaleString("ja-JP", {
+                                timeZone: "Asia/Tokyo",
+                            }),
+                        ),
+                    );
                     return start <= now && now <= end;
                 });
 
                 if (activeRes) {
-                    activeReservations.set(seatId, activeRes.user_id);
+                    activeReservations.set(
+                        seatId,
+                        activeRes.profile_picture_url,
+                    );
                 }
             });
 
@@ -109,6 +134,11 @@ export default function OfficeMap({ mapData, chairData, payload }) {
 
         updateCurrentReservations();
     }, [allReservations]);
+
+    const handleReservationComplete = (newReservation) => {
+        fetchAndUpdateReservations();
+        setReservations((prev) => [...prev, newReservation]);
+    };
 
     // クリック時にキャッシュから取得
     const handleChairClick = (id) => {
@@ -120,25 +150,72 @@ export default function OfficeMap({ mapData, chairData, payload }) {
         setSelectedMap(selectedMapData);
     };
 
+    const handleTimeChange = (time, date) => {
+        setSelectedTime(time);
+        setSelectedDate(date);
+        // 選択された時間に基づいて予約をフィルタリング
+        const updatedReservations = new Map();
+
+        allReservations.forEach((reservations, seatId) => {
+            const activeRes = reservations.find((res) => {
+                const startDate = new Date(
+                    Date.parse(
+                        new Date(res.start_date).toLocaleString("ja-JP", {
+                            timeZone: "Asia/Tokyo",
+                        }),
+                    ),
+                );
+                const endDate = new Date(
+                    Date.parse(
+                        new Date(res.end_date).toLocaleString("ja-JP", {
+                            timeZone: "Asia/Tokyo",
+                        }),
+                    ),
+                );
+                const selectedTimeDate = new Date(time);
+                return startDate <= selectedTimeDate &&
+                    selectedTimeDate <= endDate;
+            });
+
+            if (activeRes) {
+                updatedReservations.set(seatId, activeRes.profile_picture_url);
+            }
+        });
+
+        setCurrentReservations(updatedReservations);
+    };
+
     if (!mapData) {
         return <div>Loading...</div>;
     }
 
     //メインページ要素の位置はここで調整
     return (
-        <div class="office-container flex flex-row justify-center items-stretch min-h-screen mt-10 pl-40">
-            <div class="widgettabreserve mr-4 h-full">
+        <div class="office-container flex flex-row justify-center items-stretch min-h-screen mt-5 pl-40">
+            <div class="widgettabreserve mt-10 mr-4 h-full">
                 <SideWidget
                     selectedChairId={selectedChairId}
                     chairData={chairData}
                     payload={payload}
                     reservations={reservations}
+                    setReservations={setReservations}
+                    onReservationComplete={handleReservationComplete}
                 />
             </div>
 
             {/* MapSelector & SvgComponent を縦並び & 伸縮可能に */}
             <div class="flex flex-col h-full flex-grow">
-                <MapSelector mapData={mapData} onSelect={handleMapSelect} />
+                <div class="flex flex-row h-full flex-grow">
+                    <div class="mt-10 mr-4 ">
+                        <MapSelector
+                            mapData={mapData}
+                            onSelect={handleMapSelect}
+                        />
+                    </div>
+                    <div class="mr-4 w-2/3">
+                        <TimeSlider onTimeChange={handleTimeChange} />
+                    </div>
+                </div>
                 <div id="mapContainer" class="mapbody mt-5 flex-grow">
                     <SvgComponent
                         handleChairClick={handleChairClick}
@@ -183,7 +260,7 @@ const SvgComponent = (
         svgElement.querySelectorAll("image").forEach((img) => img.remove());
 
         // 現在予約中の椅子にプロフィール画像を追加
-        currentReservations.forEach((userId, seatId) => {
+        currentReservations.forEach((profilePicture, seatId) => {
             const chairElement = svgElement.querySelector(`[id="${seatId}"]`);
             if (!chairElement) return;
 
@@ -223,7 +300,7 @@ const SvgComponent = (
                 "http://www.w3.org/2000/svg",
                 "image",
             );
-            imgElement.setAttribute("href", `/${payload.profile_picture}`);
+            imgElement.setAttribute("href", `/${profilePicture}`);
             imgElement.setAttribute("x", imgX.toString());
             imgElement.setAttribute("y", imgY.toString());
             imgElement.setAttribute("width", imgWidth.toString());

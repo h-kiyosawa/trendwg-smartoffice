@@ -12,29 +12,45 @@ export const handler = async (req: Request, _ctx: HandlerContext) => {
         const status = url.searchParams.get("status") || undefined;
 
         // SQLクエリの構築
-        let query =
-            `SELECT reservation_id, user_id, seat_id, start_date, end_date, status, remarks, reserved_at 
-                     FROM reservations WHERE 1=1`;
+        let query = `SELECT 
+                reservations.reservation_id, 
+                reservations.user_id, 
+                reservations.seat_id, 
+                reservations.start_date, 
+                reservations.end_date, 
+                reservations.status, 
+                reservations.remarks, 
+                reservations.reserved_at, 
+                users.email, 
+                users.name, 
+                users.profile_picture_url,
+                users.status AS user_status, 
+                users.created_at AS user_created_at, 
+                users.updated_at AS user_updated_at 
+             FROM reservations
+             LEFT JOIN users ON reservations.user_id = users.user_id
+             WHERE 1=1`;
+
         const params: (string | number)[] = [];
 
         if (userId) {
-            query += ` AND user_id = $${params.length + 1}`;
+            query += ` AND reservations.user_id = $${params.length + 1}`;
             params.push(userId);
         }
         if (seatId) {
-            query += ` AND seat_id = $${params.length + 1}`;
+            query += ` AND reservations.seat_id = $${params.length + 1}`;
             params.push(seatId);
         }
         if (startDate) {
-            query += ` AND start_date >= $${params.length + 1}`;
+            query += ` AND reservations.start_date >= $${params.length + 1}`;
             params.push(startDate);
         }
         if (endDate) {
-            query += ` AND end_date <= $${params.length + 1}`;
+            query += ` AND reservations.end_date <= $${params.length + 1}`;
             params.push(endDate);
         }
         if (status) {
-            query += ` AND status = $${params.length + 1}`;
+            query += ` AND reservations.status = $${params.length + 1}`;
             params.push(status);
         }
 
