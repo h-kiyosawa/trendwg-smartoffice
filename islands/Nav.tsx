@@ -48,7 +48,7 @@ const Nav = ({ payload }) => {
 
     return (
         <div className="bg-green-600">
-            <nav className="flex items-center justify-between flex-wrap p-6 max-w-screen-md mx-auto">
+            <nav className="flex items-center justify-between flex-wrap p-4 max-w-screen-md mx-auto">
                 <div className="flex items-center flex-shrink-0 text-white mr-6">
                     <a href="/">
                         <img
@@ -99,7 +99,10 @@ const Nav = ({ payload }) => {
                             </a>
                             {/* MapEditリンク: permissionsが1のときのみ表示 */}
                             {payload.permissions === "1" && (
-                                <a href="/mapping" className={`${BUTTON_STYLE} ml-10`}>
+                                <a
+                                    href="/mapping"
+                                    className={`${BUTTON_STYLE} ml-10`}
+                                >
                                     MapEdit
                                 </a>
                             )}

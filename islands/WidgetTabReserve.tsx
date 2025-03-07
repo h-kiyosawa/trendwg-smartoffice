@@ -22,12 +22,16 @@ export default function WidgetTabReserve(
         chairData,
         payload,
         reservations,
-        setUpdatedReservations,
+        setReservations,
+        onReservationComplete,
     },
 ) {
     // エラーメッセージを管理
     const [reserveDateError, setReserveDateError] = useState("");
     const [userError, setUserError] = useState("");
+    const [updatedReservations, setUpdatedReservations] = useState(
+        reservations,
+    );
 
     useEffect(() => {
         setUpdatedReservations(reservations);
@@ -141,6 +145,8 @@ export default function WidgetTabReserve(
                 setUpdatedReservations((
                     prevReservations,
                 ) => [...prevReservations, newReservation]);
+
+                onReservationComplete(newReservation);
             } catch (error) {
                 console.error("Error during reservation:", error);
                 alert(

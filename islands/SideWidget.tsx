@@ -9,7 +9,8 @@ export default function SideWidget(
         chairData,
         payload,
         reservations,
-        setUpdatedReservations,
+        setReservations,
+        onReservationComplete,
     },
 ): JSX.Element {
     const [selectedTab, setSelectedTab] = useState(
@@ -103,7 +104,8 @@ export default function SideWidget(
                         chairData={chairData}
                         payload={payload}
                         reservations={reservations}
-                        setUpdatedReservations={setUpdatedReservations}
+                        setReservations={setReservations}
+                        onReservationComplete={onReservationComplete}
                     />
                 </div>
                 <div
