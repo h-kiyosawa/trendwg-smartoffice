@@ -1,6 +1,7 @@
 import { useState } from "preact/hooks";
 import WidgetTabReserve from "./WidgetTabReserve.tsx";
 import WidgetTabLogin from "./WidgetTabLogin.tsx";
+import WidgetTabChairprop from "./WidgetTabChairprop.tsx";
 import { JSX } from "preact";
 
 export default function SideWidget(
@@ -83,7 +84,7 @@ export default function SideWidget(
                         onClick={() => handleTabClick("card-type-tab-3")}
                         role="tab"
                     >
-                        Tab 3
+                        席詳細
                     </button>
                 </nav>
             </div>
@@ -126,7 +127,10 @@ export default function SideWidget(
                         : "hidden"}
                     aria-labelledby="card-type-tab-item-3"
                 >
-                    {/* タブ3 */}
+                    <WidgetTabChairprop
+                        selectedChairId={selectedChairId}
+                        chairData={chairData}
+                    />
                 </div>
             </div>
         </div>

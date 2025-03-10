@@ -22,5 +22,3 @@ export async function getMapData() {
         return acc;
     }, {});
 }
-
-
