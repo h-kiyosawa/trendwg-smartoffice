@@ -30,3 +30,4 @@ export const NOMAP_DINO_SVG = `<svg
                         </clipPath>
                     </defs>
                 </svg>`;
+export const NOMAP_DINO_SVG_2 = ``;
