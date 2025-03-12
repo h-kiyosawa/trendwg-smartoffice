@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 
 export default function TimeSlider({ onTimeChange }) {
     const minTime = 8;
-    const maxTime = 22;
+    const maxTime = 22.004;
     const defaultTime = 9;
     const now = new Date();
     let currentHour = now.getHours() + now.getMinutes() / 60;
