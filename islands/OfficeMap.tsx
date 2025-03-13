@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import MapSelector from "./MapSelector.tsx";
 import SideWidget from "./SideWidget.tsx";
-import { NOMAP_DINO_SVG } from "../static/svgData.ts";
+import { NOMAP_DINO_SVG_2 } from "../static/svgData.ts";
 import TimeSlider from "./TimeSlider.tsx";
 
 export default function OfficeMap({ mapData, chairData, payload }) {
@@ -468,7 +468,7 @@ const SvgComponent = (
                 class="absolute"
             >
                 {/* 初期SVG */}
-                <div dangerouslySetInnerHTML={{ __html: NOMAP_DINO_SVG }} />
+                <div dangerouslySetInnerHTML={{ __html: NOMAP_DINO_SVG_2 }} />
             </div>
         </div>
     );
