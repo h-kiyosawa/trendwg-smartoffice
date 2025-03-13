@@ -52,15 +52,15 @@ const Nav = ({ payload }) => {
                 <div className="flex items-center flex-shrink-0 text-white mr-6">
                     <a href="/">
                         <img
-                            src={asset("/logo.svg")}
-                            width={30}
-                            alt="the fresh logo: a sliced lemon dripping with juice"
+                            src={asset("/officesaurus_allyellow.svg")}
+                            width={35}
                         />
                     </a>
                     <a href="/">
-                        <span className="font-semibold text-xl tracking-tight">
-                            オフィスザウルス(仮)
-                        </span>
+                        <img
+                            src={asset("/オフィスザウルス.svg")}
+                            width={180}
+                        />
                     </a>
                 </div>
                 <div className="block md:hidden">
