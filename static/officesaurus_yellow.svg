@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" xmlns:bx="https://boxy-svg.com">
+  <g>
+    <rect x="268.337" y="203.545" width="62.958" height="58.68" rx="10" ry="10" style="stroke-width: 0px; stroke: rgb(0, 0, 0); fill: rgb(235, 235, 0);"/>
+    <path d="M 179.271 170.517 Q 191.609 148.53 203.947 170.517 L 216.658 193.169 Q 228.996 215.156 204.321 215.156 L 178.897 215.156 Q 154.222 215.156 166.56 193.169 Z" bx:shape="triangle 154.222 148.53 74.774 66.626 0.5 0.33 1@e9a52fd5" style="stroke-width: 0px; stroke: rgb(0, 0, 0); transform-box: fill-box; transform-origin: 50% 50%; fill: rgb(235, 235, 0);" transform="matrix(0, -1, 1, 0, 68.24099, 45.714302)"/>
+    <rect x="231.186" y="146.991" width="24.863" height="96.072" rx="10" ry="10" style="stroke-width: 0px; stroke: rgb(0, 0, 0); fill: rgb(235, 235, 0);"/>
+    <path style="stroke-width: 0px; stroke: rgb(0, 0, 0); transform-box: fill-box; transform-origin: 50% 50%; fill: rgb(235, 235, 0);" d="M 248.972 212.101 C 250.608 211.204 247.874 213.473 249.291 212.248 C 256.598 205.934 266.85 202.403 263.979 217.536 C 263.643 219.305 263.519 220.469 262.883 221.863 C 262.659 222.354 270.866 195.905 270.866 196.212" transform="matrix(-1, 0, 0, -1, 0.000009, 0.00001)"/>
+    <rect x="231.083" y="254.662" width="21.109" height="31.883" rx="3.379" ry="3.379" style="stroke-width: 0px; stroke: rgb(0, 0, 0); fill: rgb(235, 235, 0);"/>
+    <rect x="231.155" y="209.274" width="7.895" height="69.655" rx="10" ry="10" style="stroke-width: 0px; stroke: rgb(0, 0, 0); fill: rgb(235, 235, 0);"/>
+    <path style="stroke-width: 0px; stroke: rgb(0, 0, 0); fill: rgb(235, 235, 0);" d="M 231.692 242.092 C 248.333 236.664 253.966 256.24 251.918 262.649"/>
+    <rect x="237.096" y="243.94" width="8.819" height="13.658" rx="10" ry="10" style="stroke-width: 0px; stroke: rgb(0, 0, 0); fill: rgb(235, 235, 0);"/>
+    <rect x="263.685" y="254.54" width="21.109" height="31.883" rx="3.379" ry="3.379" style="stroke-width: 0px; stroke: rgb(0, 0, 0); fill: rgb(235, 235, 0);"/>
+    <rect x="310.073" y="240.34" width="21.109" height="46.171" rx="3.379" ry="3.379" style="stroke-width: 0px; stroke: rgb(0, 0, 0); fill: rgb(235, 235, 0);"/>
+    <rect x="244.662" y="132.834" width="33.024" height="30.593" rx="14.55" ry="14.55" style="stroke-width: 0px; stroke: rgb(0, 0, 0); fill: rgb(235, 235, 0);"/>
+    <path d="M 244.98 186.265 Q 246.986 183.144 248.991 186.265 L 253.336 193.027 Q 255.342 196.148 251.331 196.148 L 242.64 196.148 Q 238.629 196.148 240.635 193.027 Z" bx:shape="triangle 238.629 183.144 16.713 13.004 0.5 0.24 1@ce08deab" style="stroke-width: 0px; stroke: rgb(0, 0, 0); transform-box: fill-box; transform-origin: 50% 50%; fill: rgb(235, 235, 0);" transform="matrix(0, -1, 1, 0, -23.581936, -33.463921)"/>
+    <path d="M 244.98 186.265 Q 246.986 183.144 248.991 186.265 L 253.336 193.027 Q 255.342 196.148 251.331 196.148 L 242.64 196.148 Q 238.629 196.148 240.635 193.027 Z" bx:shape="triangle 238.629 183.144 16.713 13.004 0.5 0.24 1@ce08deab" style="stroke-width: 0px; stroke: rgb(0, 0, 0); transform-origin: 246.985px 190.426px; fill: rgb(235, 235, 0);" transform="matrix(0, -1, 1, 0, -23.821869, -17.394302)"/>
+    <path d="M 244.98 186.265 Q 246.986 183.144 248.991 186.265 L 253.336 193.027 Q 255.342 196.148 251.331 196.148 L 242.64 196.148 Q 238.629 196.148 240.635 193.027 Z" bx:shape="triangle 238.629 183.144 16.713 13.004 0.5 0.24 1@ce08deab" style="stroke-width: 0px; stroke: rgb(0, 0, 0); transform-origin: 246.985px 190.426px; fill: rgb(235, 235, 0);" transform="matrix(0, -1, 1, 0, -24.035263, -1.958481)"/>
+    <path d="M 244.98 186.265 Q 246.986 183.144 248.991 186.265 L 253.336 193.027 Q 255.342 196.148 251.331 196.148 L 242.64 196.148 Q 238.629 196.148 240.635 193.027 Z" bx:shape="triangle 238.629 183.144 16.713 13.004 0.5 0.24 1@ce08deab" style="stroke-width: 0px; stroke: rgb(0, 0, 0); transform-origin: 246.985px 190.426px; fill: rgb(235, 235, 0);" transform="matrix(0, -1, 1, 0, -24.2752, 14.11113)"/>
+    <ellipse style="stroke-width: 0px; stroke: rgb(255, 255, 255); fill: rgb(0, 194, 43);" cx="258.981" cy="143.307" rx="2.018" ry="1.848"/>
+    <path style="stroke: rgb(0, 0, 0); stroke-width: 0px; fill: rgb(235, 235, 0);" d="M 256.603 133.021 C 251.433 133.021 244.492 136.226 240.853 139.865 C 239.342 141.376 237.162 143.658 235.783 145.037 C 233.127 147.693 231.282 151.632 231.282 155.688"/>
+    <path d="M 244.98 186.265 Q 246.986 183.144 248.991 186.265 L 253.336 193.027 Q 255.342 196.148 251.331 196.148 L 242.64 196.148 Q 238.629 196.148 240.635 193.027 Z" bx:shape="triangle 238.629 183.144 16.713 13.004 0.5 0.24 1@ce08deab" style="stroke-width: 0px; stroke: rgb(0, 0, 0); transform-origin: 246.985px 190.426px; fill: rgb(235, 235, 0);" transform="matrix(0, -1, 1, 0, -4.607315, -41.392624)"/>
+    <ellipse style="stroke-width: 0px; stroke: rgb(255, 255, 255); fill: rgb(0, 194, 43);" cx="307.516" cy="213.895" rx="4.398" ry="4.294"/>
+    <ellipse style="stroke-width: 0px; stroke: rgb(255, 255, 255); fill: rgb(0, 194, 43);" cx="318.944" cy="211.739" rx="2.463" ry="2.359"/>
+    <ellipse style="stroke-width: 0px; stroke: rgb(255, 255, 255); fill: rgb(0, 194, 43);" cx="-324.19" cy="219.257" rx="2.544" ry="2.587" transform="matrix(-1, 0, 0, 1, 0, 0)"/>
+  </g>
+</svg>
