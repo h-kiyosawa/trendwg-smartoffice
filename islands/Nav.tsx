@@ -48,7 +48,7 @@ const Nav = ({ payload }) => {
 
     return (
         <div className="bg-green-600">
-            <nav className="flex items-center justify-between flex-wrap p-4 max-w-screen-md mx-auto">
+            <nav className="flex items-center justify-between flex-wrap p-4 max-w-screen-xl mx-auto">
                 <div className="flex items-center flex-shrink-0 text-white mr-6">
                     <a href="/">
                         <img
@@ -82,7 +82,7 @@ const Nav = ({ payload }) => {
                 </div>
                 {navOpen && payload && (
                     <div className={NAV_STYLE}>
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center space-x-3 ml-auto">
                             {/* アイコン画像 */}
                             <a href="/profile">
                                 <img
