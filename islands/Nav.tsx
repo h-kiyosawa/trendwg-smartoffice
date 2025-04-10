@@ -58,7 +58,7 @@ const Nav = ({ payload }) => {
                     </a>
                     <a href="/">
                         <img
-                            src={asset("/オフィスザウルス.svg")}
+                            src={asset("/オフィスザウルス2.svg")}
                             width={180}
                         />
                     </a>
